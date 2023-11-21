@@ -5,8 +5,6 @@ import android.app.Application
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
 import com.santansarah.scan.domain.interfaces.IAnalytics
 import com.santansarah.scan.presentation.BleGatt
 import com.santansarah.scan.presentation.BleManager
@@ -24,8 +22,7 @@ import org.koin.dsl.module
 
 val appModule = module {
 
-    single { Firebase.analytics }
-    single<IAnalytics> { Analytics(get()) }
+    single<IAnalytics> { Analytics() }
 
     fun provideBluetoothManager(app: Application): BluetoothManager {
         return app.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager

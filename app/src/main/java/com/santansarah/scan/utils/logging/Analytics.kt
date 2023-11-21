@@ -1,7 +1,6 @@
 package com.santansarah.scan.utils.logging
 
 import android.os.Bundle
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.santansarah.scan.domain.interfaces.IAnalytics
 import org.koin.core.component.KoinComponent
 
@@ -27,7 +26,7 @@ data class ScreenEvent(
     val uuid: String
 )
 
-class Analytics(private val firebaseAnalytics: FirebaseAnalytics) :
+class Analytics() :
     KoinComponent, IAnalytics {
 
     override fun logCharacteristicEvent(analyticsEvent: CharacteristicEvent) {
@@ -43,11 +42,6 @@ class Analytics(private val firebaseAnalytics: FirebaseAnalytics) :
 
         val params = Bundle()
         params.putString("uuid", analyticsEvent.uuid)
-
-        firebaseAnalytics.logEvent(
-            analyticsEvent.eventName,
-            params)
-
     }
 
 

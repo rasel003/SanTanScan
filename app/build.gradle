@@ -3,9 +3,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.serialization'
-    id 'de.mannodermaus.android-junit5'
-    id 'com.google.gms.google-services'
-    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -20,25 +17,25 @@ android {
         versionName "1.1"
 
         // add the AndroidJUnitRunner, then connect JUnit 5 to the runner
-        testInstrumentationRunner "com.santansarah.scan.InstrumentationTestRunner"
-        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
+//        testInstrumentationRunner "com.santansarah.scan.InstrumentationTestRunner"
+//        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
 
         vectorDrawables {
             useSupportLibrary true
         }
     }
 
-    def appPropertiesFile = rootProject.file("app.properties")
-    def appProperties = new Properties()
-    appProperties.load(new FileInputStream(appPropertiesFile))
+//    def appPropertiesFile = rootProject.file("app.properties")
+//    def appProperties = new Properties()
+//    appProperties.load(new FileInputStream(appPropertiesFile))
 
     signingConfigs {
 
         release {
-            storeFile file(appProperties.getProperty("RELEASE_STORE_FILE"))
-            storePassword appProperties.getProperty("RELEASE_STORE_PASSWORD")
-            keyAlias appProperties.getProperty("RELEASE_KEY_ALIAS")
-            keyPassword appProperties.getProperty("RELEASE_KEY_PASSWORD")
+//            storeFile file(appProperties.getProperty("RELEASE_STORE_FILE"))
+//            storePassword appProperties.getProperty("RELEASE_STORE_PASSWORD")
+//            keyAlias appProperties.getProperty("RELEASE_KEY_ALIAS")
+//            keyPassword appProperties.getProperty("RELEASE_KEY_PASSWORD")
 
             // Optional, specify signing versions used
             v1SigningEnabled true
@@ -70,10 +67,13 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion '1.3.2'
     }
-    packagingOptions {
+   /* packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
+    }*/
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
     }
 
     testOptions {
@@ -135,11 +135,6 @@ dependencies {
     implementation "androidx.window:window:1.1.0-alpha04"
     implementation "androidx.compose.material3:material3-window-size-class:1.1.0-alpha06"
 
-    // firebase
-    implementation platform('com.google.firebase:firebase-bom:31.2.3')
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'
-
 
     //testing
     testImplementation "io.insert-koin:koin-test:$koin_android_version"
@@ -151,7 +146,6 @@ dependencies {
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
     testImplementation 'io.mockk:mockk:1.13.3'
 
-    androidTestImplementation project(":sharedTest")
     androidTestImplementation "androidx.room:room-testing:$room_version"
     kaptAndroidTest "androidx.room:room-compiler:$room_version"
 
@@ -159,9 +153,9 @@ dependencies {
     androidTestImplementation "io.insert-koin:koin-test-junit5:$koin_android_version"
     androidTestImplementation 'androidx.test:core:1.5.0'
     androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestRuntimeOnly 'androidx.test:runner:1.4.0'
+
     androidTestImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    androidTestImplementation 'de.mannodermaus.junit5:android-test-core:1.3.0'
-    androidTestRuntimeOnly 'de.mannodermaus.junit5:android-test-runner:1.3.0'
     //androidTestImplementation 'org.junit.platform:junit-platform-suite-engine:1.9.2'
     androidTestImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
     androidTestImplementation 'io.mockk:mockk-android:1.13.3'
@@ -173,7 +167,6 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.4.0-beta02"
     debugImplementation "androidx.compose.ui:ui-test-manifest"
 
-    androidTestImplementation 'de.mannodermaus.junit5:android-test-compose:0.1.0-SNAPSHOT'
 
 
 }
