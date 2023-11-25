@@ -1,6 +1,8 @@
 package com.santansarah.scan.presentation.scan.device
 
+import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Color
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,13 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -30,21 +27,25 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.santansarah.scan.R
 import com.santansarah.scan.domain.models.DeviceDetail
 import com.santansarah.scan.domain.models.DeviceService
-import com.santansarah.scan.domain.models.propsToString
 import com.santansarah.scan.presentation.previewparams.PreviewDeviceDetailProvider
 import com.santansarah.scan.presentation.theme.SanTanScanTheme
-import com.santansarah.scan.presentation.theme.bodySmallItalic
 import com.santansarah.scan.utils.windowinfo.AppLayoutInfo
 import com.santansarah.scan.utils.windowinfo.AppLayoutMode
+
 
 @Composable
 fun ServicePager(
@@ -69,67 +70,9 @@ fun ServicePager(
             modifier = mainBodyModifier
         ) {
             val services = selectedDevice.services
-            val totalServices by rememberSaveable { mutableStateOf(services.count()) }
-            var currentServiceIdx by rememberSaveable { mutableStateOf(0) }
+            //            var currentServiceIdx by rememberSaveable { mutableStateOf(0) }
+            val currentServiceIdx = services.indexOfFirst { it.name.contains("Mfr", true) }.takeIf { it >= 0 } ?: 0
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                //.background(Color.White.copy(.3f)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                IconButton(
-                    colors = IconButtonDefaults.iconButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(.3f)
-                    ),
-                    enabled = (currentServiceIdx > 0),
-                    onClick = {
-                        currentServiceIdx--
-                    }
-                ) {
-                    Icon(
-                        //modifier = Modifier.align(Alignment.Top),
-                        imageVector = Icons.Default.KeyboardArrowLeft,
-                        contentDescription = "Next Service",
-                    )
-                }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = services[currentServiceIdx].name,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-
-                IconButton(
-                    colors = IconButtonDefaults.iconButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(.3f)
-                    ),
-                    enabled = (currentServiceIdx != (totalServices - 1)),
-                    onClick = {
-                        currentServiceIdx++
-                    }
-                ) {
-                    Icon(
-                        //modifier = Modifier.align(Alignment.Top),
-                        imageVector = Icons.Default.KeyboardArrowRight,
-                        contentDescription = "Next Service",
-                    )
-                }
-            }
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 4.dp),
-                text = services[currentServiceIdx].uuid,
-                style = MaterialTheme.typography.labelMedium,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurface
-            )
 
             ServicePagerDetail(
                 services[currentServiceIdx],
@@ -142,6 +85,8 @@ fun ServicePager(
         }
     }
 }
+
+
 
 
 @Composable
@@ -161,13 +106,14 @@ fun ServicePagerDetail(
             .verticalScroll(rememberScrollState())
     ) {
 
-        service.characteristics.forEach { char ->
+        service.characteristics
+//            .filter { it.uuid.contains("E924", ignoreCase = true) }
+            .forEach { char ->
             OutlinedCard(
                 modifier = Modifier
                     .defaultMinSize(minHeight = 200.dp)
             ) {
-                var state by rememberSaveable { mutableStateOf(0) }
-                var expanded by rememberSaveable { mutableStateOf(false) }
+                val state by rememberSaveable { mutableStateOf(0) }
 
                 Column(
                     modifier = Modifier.padding(6.dp)
@@ -191,16 +137,8 @@ fun ServicePagerDetail(
                                 text = char.uuid.uppercase(),
                                 style = MaterialTheme.typography.bodySmall
                             )
-                            Text(
-                                text = char.properties.propsToString(),
-                                style = bodySmallItalic
-                            )
                         }
 
-                        ReadWriteMenu(
-                            expanded = expanded,
-                            onExpanded = { expanded = it },
-                            onState = { state = it })
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
@@ -277,12 +215,6 @@ fun ServicePagerDetail(
             if (service.characteristics.indexOf(char) < service.characteristics.count() - 1) {
                 Spacer(modifier = Modifier.height(16.dp))
             }
-
-
-            /*char.descriptors.forEach { desc ->
-                    Text(text = "- ${desc.uuid}")
-                    Text(text = desc.permissions.toString())
-                }*/
         }
 
 
@@ -290,11 +222,7 @@ fun ServicePagerDetail(
 
 }
 
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true,
-    backgroundColor = 0xFF17191b
-)
+
 @Preview(
     uiMode = Configuration.UI_MODE_NIGHT_NO,
     showBackground = true,

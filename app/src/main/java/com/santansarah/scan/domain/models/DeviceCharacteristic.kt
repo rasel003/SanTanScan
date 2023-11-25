@@ -106,11 +106,11 @@ fun DeviceCharacteristics.getReadInfo(): String {
                     append(PreferredConnectionParams.getReadStringFromBytes(bytes))
 
                 else -> {
-                    appendLine("String, Hex, Bytes, Binary:")
+//                    appendLine("String, Hex, Bytes, Binary:")
                     appendLine(bytes.decodeSkipUnreadable())
-                    appendLine(bytes.toHex())
-                    appendLine("[" + bytes.print() + "]")
-                    appendLine(bytes.toBinaryString())
+//                    appendLine(bytes.toHex())
+                    appendLine( bytes.print())
+                    //appendLine(bytes.toBinaryString())
                 }
             }
         }

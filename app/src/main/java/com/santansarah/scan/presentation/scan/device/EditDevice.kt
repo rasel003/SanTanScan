@@ -130,7 +130,7 @@ fun EditDevice(
 )
 @Composable
 fun PreviewEditDevice() {
-SanTanScanTheme() {
+SanTanScanTheme {
 
     Box(
         modifier = Modifier

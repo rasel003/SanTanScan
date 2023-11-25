@@ -135,7 +135,7 @@ private fun ScanFilterButtons(
 @Preview
 @Composable
 fun PreviewScanFilters() {
-    SanTanScanTheme() {
+    SanTanScanTheme {
         Surface {
             ScanFilters({}, ScanFilterOption.FAVORITES, portrait)
         }
@@ -145,7 +145,7 @@ fun PreviewScanFilters() {
 @Preview
 @Composable
 fun PreviewScanFiltersLandscape() {
-    SanTanScanTheme() {
+    SanTanScanTheme {
         Surface {
             ScanFilters({}, ScanFilterOption.FAVORITES, landscapeNormal)
         }
@@ -155,7 +155,7 @@ fun PreviewScanFiltersLandscape() {
 @Preview
 @Composable
 fun PreviewScanFiltersLandscapeBig() {
-    SanTanScanTheme() {
+    SanTanScanTheme {
         Surface {
             ScanFilters({}, ScanFilterOption.FAVORITES, landscapeBig)
         }

@@ -154,10 +154,6 @@ fun ScannedDevice(
     }
 
 }
-
-@Preview(
-    uiMode = UI_MODE_NIGHT_YES
-)
 @Preview(
     uiMode = UI_MODE_NIGHT_NO
 )
@@ -165,7 +161,7 @@ fun ScannedDevice(
 fun ScannedDevicePreview() {
     val device = devices[0]
     SanTanScanTheme {
-        Surface() {
+        Surface {
             Box(
                 modifier = Modifier
                     .fillMaxSize()

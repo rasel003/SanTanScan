@@ -10,7 +10,7 @@ data class AppLayoutInfo(
     val foldableInfo: FoldableInfo? = null
 )
 
-enum class CurrentRotation() {
+enum class CurrentRotation {
     ROTATION_0,
     ROTATION_90,
     ROTATION_180,

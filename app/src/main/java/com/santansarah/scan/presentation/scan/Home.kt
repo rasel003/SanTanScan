@@ -43,7 +43,7 @@ fun HomeRoute(
     val multiplePermissionsState = rememberMultiplePermissionsState(permissions = permissionsList)
     val isScanning = vm.isScanning.collectAsStateWithLifecycle().value
     val isEditing = vm.isEditing.collectAsStateWithLifecycle().value
-    
+
     BackHandler {
         if (scanState.scanUI.selectedDevice != null) run {
             vm.onBackFromDevice()
@@ -123,16 +123,15 @@ fun HomeLayout(
                     permissionsGranted = multiplePermissionsState.allPermissionsGranted
                 )
             else
-                if (!appLayoutInfo.appLayoutMode.isLandscape())
-                    AppBarWithBackButton(
-                        appLayoutInfo = appLayoutInfo,
-                        onBackClicked = scanState.deviceEvents.onBack,
-                        scanUi = scanState.scanUI,
-                        deviceDetail = selectedDevice,
-                        deviceEvents = scanState.deviceEvents,
-                        bleConnectEvents = scanState.bleConnectEvents,
-                        onControlClick = onControlClick
-                    )
+                AppBarWithBackButton(
+                    appLayoutInfo = appLayoutInfo,
+                    onBackClicked = scanState.deviceEvents.onBack,
+                    scanUi = scanState.scanUI,
+                    deviceDetail = selectedDevice,
+                    deviceEvents = scanState.deviceEvents,
+                    bleConnectEvents = scanState.bleConnectEvents,
+                    onControlClick = onControlClick
+                )
         }
     ) { padding ->
 

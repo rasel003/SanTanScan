@@ -60,7 +60,7 @@ fun ControlScreen(
             snackbarHost = { SnackbarHost(hostState = appSnackBarHostState) },
             topBar = {
                 if (!appLayoutInfo.appLayoutMode.isLandscape()) {
-                    BasicBackTopAppBar(appLayoutInfo = appLayoutInfo, onBackClicked = onBackClicked) {
+                    BasicBackTopAppBar(onBackClicked = onBackClicked) {
                         Text(text = controlState.device.displayName(), style = appBarTitle)
                     }
                 }
@@ -94,21 +94,19 @@ fun ControlScreen(
                         ) {
 
                             BasicBackTopAppBar(
-                                appLayoutInfo = appLayoutInfo,
-                                onBackClicked = onBackClicked,
-                                titleContent = {
-                                    Row() {
-                                        ConnectButtons(
-                                            connectEnabled, vm::onConnect,
-                                            controlState.device, disconnectEnabled, vm::onDisconnect
-                                        )
-                                        OnOffButton(
-                                            turnOn = vm::deviceOn,
-                                            turnOff = vm::deviceOff,
-                                        )
-                                    }
+                                onBackClicked = onBackClicked
+                            ) {
+                                Row {
+                                    ConnectButtons(
+                                        connectEnabled, vm::onConnect,
+                                        controlState.device, disconnectEnabled, vm::onDisconnect
+                                    )
+                                    OnOffButton(
+                                        turnOn = vm::deviceOn,
+                                        turnOff = vm::deviceOff,
+                                    )
                                 }
-                            )
+                            }
                             Text(
                                 modifier = Modifier.padding(6.dp),
                                 text = controlState.device.displayName(),
@@ -142,7 +140,7 @@ fun ControlScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
-                        Row() {
+                        Row {
                             ConnectButtons(
                                 connectEnabled, vm::onConnect,
                                 controlState.device, disconnectEnabled, vm::onDisconnect

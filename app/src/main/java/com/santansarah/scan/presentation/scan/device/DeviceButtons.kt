@@ -25,7 +25,7 @@ fun DeviceButtons(
     services: List<DeviceService>,
     onControlClick: (String) -> Unit,
 ) {
-    Row() {
+    Row {
         ConnectButtons(connectEnabled, onConnect, device, disconnectEnabled, onDisconnect)
         services.flatMap { it.characteristics }.find {
             it.uuid == ELKBLEDOM.uuid

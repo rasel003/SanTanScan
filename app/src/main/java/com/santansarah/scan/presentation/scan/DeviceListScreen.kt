@@ -41,26 +41,12 @@ fun DeviceListScreen(
             top = paddingValues.calculateTopPadding()
         )
     ) {
-
-        if (appLayoutInfo.appLayoutMode.isLandscape()) {
-            Row() {
-                    ScanFilters(
-                        onFilter = onFilter,
-                        scanFilterOption = scanFilterOption,
-                        appLayoutInfo = appLayoutInfo
-                    )
-                ScannedDeviceList(appLayoutInfo, devices, onClick, onFavorite, onForget)
-            }
-        } else {
-
-            ScanFilters(
-                onFilter = onFilter,
-                scanFilterOption = scanFilterOption,
-                appLayoutInfo = appLayoutInfo
-            )
-            ScannedDeviceList(appLayoutInfo, devices, onClick, onFavorite, onForget)
-        }
-
+        ScanFilters(
+            onFilter = onFilter,
+            scanFilterOption = scanFilterOption,
+            appLayoutInfo = appLayoutInfo
+        )
+        ScannedDeviceList(appLayoutInfo, devices, onClick, onFavorite, onForget)
     }
 }
 
@@ -73,14 +59,12 @@ fun ScannedDeviceList(
     onForget: (ScannedDevice) -> Unit
 ) {
 
-    val sidePadding = when(appLayoutInfo.appLayoutMode) {
+    val sidePadding = when (appLayoutInfo.appLayoutMode) {
         AppLayoutMode.PORTRAIT_NARROW -> 16.dp
         AppLayoutMode.LANDSCAPE_BIG -> 30.dp
         AppLayoutMode.LANDSCAPE_NORMAL -> 16.dp
         else -> 8.dp
     }
-
-
 
     LazyColumn(
         modifier = Modifier.padding(sidePadding)
@@ -103,7 +87,7 @@ fun ScannedDeviceList(
 fun PreviewDeviceListScreen(
     @PreviewParameter(PortraitListParams::class) featureParams: FeatureParams
 ) {
-    SanTanScanTheme() {
+    SanTanScanTheme {
         Column {
             DeviceListScreen(
                 paddingValues = PaddingValues(),
@@ -119,44 +103,3 @@ fun PreviewDeviceListScreen(
     }
 }
 
-@LandscapeLayouts
-@Composable
-fun PreviewLandscapeDeviceListScreen(
-    @PreviewParameter(LandscapeListParams::class) featureParams: FeatureParams
-) {
-    SanTanScanTheme() {
-        Column {
-            DeviceListScreen(
-                paddingValues = PaddingValues(),
-                devices = featureParams.scannedDevice,
-                onClick = {},
-                onFilter = {},
-                scanFilterOption = ScanFilterOption.FAVORITES,
-                onFavorite = {},
-                onForget = {},
-                appLayoutInfo = featureParams.appLayoutInfo
-            )
-        }
-    }
-}
-
-@LandscapeBig
-@Composable
-fun PreviewLandscapeBigListScreen(
-    @PreviewParameter(LandscapeBigListParams::class) featureParams: FeatureParams
-) {
-    SanTanScanTheme() {
-        Column {
-            DeviceListScreen(
-                paddingValues = PaddingValues(),
-                devices = featureParams.scannedDevice,
-                onClick = {},
-                onFilter = {},
-                scanFilterOption = ScanFilterOption.FAVORITES,
-                onFavorite = {},
-                onForget = {},
-                appLayoutInfo = featureParams.appLayoutInfo
-            )
-        }
-    }
-}

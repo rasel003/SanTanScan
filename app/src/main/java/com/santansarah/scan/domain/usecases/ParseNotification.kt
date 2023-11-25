@@ -5,7 +5,7 @@ import com.santansarah.scan.domain.models.DeviceService
 import com.santansarah.scan.domain.models.updateNotification
 import timber.log.Timber
 
-class ParseNotification() {
+class ParseNotification {
 
     operator fun invoke(
         deviceDetails: List<DeviceService>,

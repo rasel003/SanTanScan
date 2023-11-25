@@ -43,7 +43,7 @@ fun MainMenu(
         onClick = { onExpanded(true) }) {
         Icon(
             //modifier = Modifier.then(Modifier.padding(0.dp)),
-            painter = painterResource(id = R.drawable.santanscan_icon),
+            painter = painterResource(id = R.drawable.connect),
             contentDescription = "Actions",
             tint = Color.Unspecified
         )

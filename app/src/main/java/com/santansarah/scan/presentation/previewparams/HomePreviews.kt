@@ -18,7 +18,7 @@ fun HomeLayoutPreview(
     @PreviewParameter(PortraitLayoutParams::class) featureParams: FeatureParams
 ) {
 
-    SanTanScanTheme() {
+    SanTanScanTheme {
         Column {
             HomeLayout(
                 appLayoutInfo = featureParams.appLayoutInfo,
@@ -58,7 +58,7 @@ fun HomeLayoutNarrowPreview(
     @PreviewParameter(PortraitNarrowLayoutParams::class) featureParams: FeatureParams
 ) {
 
-    SanTanScanTheme() {
+    SanTanScanTheme {
         Column {
             HomeLayout(
                 appLayoutInfo = featureParams.appLayoutInfo,
@@ -98,7 +98,7 @@ fun HomeLandscapeLayoutPreview(
     @PreviewParameter(LandscapeLayoutParams::class) featureParams: FeatureParams
 ) {
 
-    SanTanScanTheme() {
+    SanTanScanTheme {
         Column {
             HomeLayout(
                 appLayoutInfo = featureParams.appLayoutInfo,
@@ -138,7 +138,7 @@ fun HomeLayoutBigPreview(
     @PreviewParameter(LandscapeBigLayoutParams::class) featureParams: FeatureParams
 ) {
 
-    SanTanScanTheme() {
+    SanTanScanTheme {
         Column {
             HomeLayout(
                 appLayoutInfo = featureParams.appLayoutInfo,

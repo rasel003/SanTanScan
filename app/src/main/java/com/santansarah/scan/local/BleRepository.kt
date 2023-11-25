@@ -9,6 +9,7 @@ import com.santansarah.scan.local.entities.ScannedDevice
 import com.santansarah.scan.local.entities.Service
 import com.santansarah.scan.domain.interfaces.IBleRepository
 import com.santansarah.scan.domain.models.ScanFilterOption
+import com.santansarah.scan.local.entities.ReceivedData
 import com.santansarah.scan.utils.toGss
 import com.santansarah.scan.utils.toHex
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +17,8 @@ import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
 class BleRepository(
-    private val dao: BleDao
+    private val dao: BleDao,
+    private val bleDataDao: BleDataDao
 ): IBleRepository {
 
     override suspend fun getCompanyById(id: Int): Company? = dao.getCompanyById(id)
@@ -122,4 +124,10 @@ class BleRepository(
 
     override suspend fun deleteNotSeen() = dao.deleteNotSeen()
 
+
+    // Received Data
+    override suspend fun getReceivedDataByUuid(uuid: String): Flow<List<ReceivedData>> = bleDataDao.getReceivedDataByUuid(uuid)
+
+    override suspend fun insertReceivedData(device: ReceivedData) = bleDataDao.insertReceivedData(device)
+    override suspend fun deleteReceivedData() = bleDataDao.deleteReceivedData()
 }

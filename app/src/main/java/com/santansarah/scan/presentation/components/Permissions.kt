@@ -32,9 +32,6 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.PermissionState
 import com.santansarah.scan.R
-import com.santansarah.scan.domain.privacyPolicy
-import com.santansarah.scan.domain.termsLink
-import com.santansarah.scan.presentation.help.LegalStuff
 import com.santansarah.scan.presentation.previewparams.FeatureParams
 import com.santansarah.scan.presentation.previewparams.LandscapeBig
 import com.santansarah.scan.presentation.previewparams.LandscapeBigListParams
@@ -123,12 +120,6 @@ fun ShowPermissions(
                     text = "Before you can start scanning for BLE devices, first, " +
                             "you'll need to enable some Bluetooth and Location permissions.",
                     )
-                Spacer(modifier = Modifier.height(10.dp))
-                LegalStuff(
-                    privacyPolicyLink = privacyPolicy,
-                    termsLink = termsLink,
-                    uriHandler = uriHandler
-                )
 
                 Spacer(modifier = Modifier.height(30.dp))
 
@@ -195,7 +186,7 @@ fun PermissionsPreview(
     @PreviewParameter(PortraitListParams::class) featureParams: FeatureParams
 ) {
     SanTanScanTheme(dynamicColor = false) {
-        Surface() {
+        Surface {
             ShowPermissions(
                 featureParams.appLayoutInfo,
                 paddingValues = PaddingValues(0.dp),
@@ -225,7 +216,7 @@ fun PermissionsNarrowPreview(
     @PreviewParameter(PortraitNarrowListParams::class) featureParams: FeatureParams
 ) {
     SanTanScanTheme(dynamicColor = false) {
-        Surface() {
+        Surface {
             ShowPermissions(
                 featureParams.appLayoutInfo,
                 paddingValues = PaddingValues(0.dp),
@@ -256,7 +247,7 @@ fun PermissionsLandscapePreview(
     @PreviewParameter(LandscapeListParams::class) featureParams: FeatureParams
 ) {
     SanTanScanTheme(dynamicColor = false) {
-        Surface() {
+        Surface {
             ShowPermissions(
                 featureParams.appLayoutInfo,
                 paddingValues = PaddingValues(0.dp),
@@ -286,7 +277,7 @@ fun PermissionsLandscapeBigPreview(
     @PreviewParameter(LandscapeBigListParams::class) featureParams: FeatureParams
 ) {
     SanTanScanTheme(dynamicColor = false) {
-        Surface() {
+        Surface {
             ShowPermissions(
                 featureParams.appLayoutInfo,
                 paddingValues = PaddingValues(0.dp),

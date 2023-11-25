@@ -8,6 +8,7 @@ import com.santansarah.scan.local.entities.BleCharacteristic
 import com.santansarah.scan.local.entities.Company
 import com.santansarah.scan.local.entities.Descriptor
 import com.santansarah.scan.local.entities.MicrosoftDevice
+import com.santansarah.scan.local.entities.ReceivedData
 import com.santansarah.scan.local.entities.ScannedDevice
 import com.santansarah.scan.local.entities.Service
 import kotlinx.serialization.decodeFromString
@@ -16,12 +17,13 @@ import kotlinx.serialization.json.Json
 
 @Database(
     entities = [Company::class, Service::class, BleCharacteristic::class,
-        MicrosoftDevice::class, ScannedDevice::class, Descriptor::class],
+        MicrosoftDevice::class, ScannedDevice::class, Descriptor::class, ReceivedData::class],
     version = 1, exportSchema = true
 )
 @TypeConverters(Converters::class)
 abstract class BleDatabase : RoomDatabase() {
     abstract fun bleDao(): BleDao
+    abstract fun bleDataDao(): BleDataDao
 }
 
 class Converters {

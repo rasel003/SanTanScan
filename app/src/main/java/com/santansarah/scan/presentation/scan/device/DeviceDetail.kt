@@ -24,10 +24,8 @@ import com.santansarah.scan.domain.models.ScanState
 import com.santansarah.scan.local.entities.ScannedDevice
 import com.santansarah.scan.local.entities.displayName
 import com.santansarah.scan.presentation.components.AppBarWithBackButton
-import com.santansarah.scan.presentation.previewparams.DeviceLandscapeParams
 import com.santansarah.scan.presentation.previewparams.DevicePortraitParams
 import com.santansarah.scan.presentation.previewparams.FeatureParams
-import com.santansarah.scan.presentation.previewparams.LandscapeLayouts
 import com.santansarah.scan.presentation.previewparams.PortraitLayouts
 import com.santansarah.scan.presentation.theme.SanTanScanTheme
 import com.santansarah.scan.utils.toDate
@@ -44,7 +42,7 @@ fun ShowDeviceDetail(
 
     val scanUi = scanState.scanUI
     val scannedDevice = scanUi.selectedDevice!!.scannedDevice
-    val services = scanUi.selectedDevice!!.services
+    val services = scanUi.selectedDevice.services
 
     val connectEnabled = !scanUi.bleMessage.isActive()
     val disconnectEnabled = scanUi.bleMessage.isActive()
@@ -127,8 +125,6 @@ fun ShowDeviceDetail(
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
-
-                DeviceDetails(scannedDevice)
             }
         }
     }
@@ -169,7 +165,7 @@ fun DeviceDetails(device: ScannedDevice) {
 fun PreviewDeviceDetailScreen(
     @PreviewParameter(DevicePortraitParams::class) featureParams: FeatureParams
 ) {
-    SanTanScanTheme() {
+    SanTanScanTheme {
         Column {
             ShowDeviceDetail(
                 scanState = featureParams.scanState,
@@ -181,20 +177,5 @@ fun PreviewDeviceDetailScreen(
     }
 }
 
-@LandscapeLayouts
-@Composable
-fun PreviewLandscapeDeviceDetailScreen(
-    @PreviewParameter(DeviceLandscapeParams::class) featureParams: FeatureParams
-) {
-    SanTanScanTheme() {
-        Column {
-            ShowDeviceDetail(
-                scanState = featureParams.scanState,
-                onControlClick = {},
-                appLayoutInfo = featureParams.appLayoutInfo,
-                onBackClicked = {}
-            )
-        }
-    }
-}
+
 

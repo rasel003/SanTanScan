@@ -9,7 +9,6 @@ import com.santansarah.scan.domain.models.AppDestinations.HOME
 import com.santansarah.scan.domain.models.AppRoutes.CONTROL_SCREEN
 import com.santansarah.scan.domain.models.AppRoutes.HELP_ABOUT
 import com.santansarah.scan.presentation.control.ControlScreen
-import com.santansarah.scan.presentation.help.AboutScreen
 import com.santansarah.scan.presentation.scan.HomeRoute
 import com.santansarah.scan.utils.windowinfo.AppLayoutInfo
 
@@ -18,7 +17,6 @@ fun AppNavGraph(
     navController: NavHostController,
     startDestination: String,
     appLayoutInfo: AppLayoutInfo,
-    openDrawer: () -> Unit = {},
 ) {
 
     NavHost(
@@ -36,12 +34,6 @@ fun AppNavGraph(
         }
         composable(CONTROL) {
             ControlScreen(
-                appLayoutInfo = appLayoutInfo,
-                onBackClicked = {navController.popBackStack()}
-            )
-        }
-        composable(HELP_ABOUT) {
-            AboutScreen(
                 appLayoutInfo = appLayoutInfo,
                 onBackClicked = {navController.popBackStack()}
             )

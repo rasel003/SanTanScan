@@ -6,7 +6,7 @@ import com.santansarah.scan.domain.models.DeviceService
 import com.santansarah.scan.domain.models.updateDescriptors
 import timber.log.Timber
 
-class ParseDescriptor() {
+class ParseDescriptor {
 
     operator fun invoke(
         deviceDetails: List<DeviceService>,

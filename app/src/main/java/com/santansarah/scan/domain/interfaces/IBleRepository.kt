@@ -1,6 +1,9 @@
 package com.santansarah.scan.domain.interfaces
 
 import android.os.ParcelUuid
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.santansarah.scan.local.entities.BleCharacteristic
 import com.santansarah.scan.local.entities.Company
 import com.santansarah.scan.local.entities.Descriptor
@@ -8,6 +11,7 @@ import com.santansarah.scan.local.entities.MicrosoftDevice
 import com.santansarah.scan.local.entities.ScannedDevice
 import com.santansarah.scan.local.entities.Service
 import com.santansarah.scan.domain.models.ScanFilterOption
+import com.santansarah.scan.local.entities.ReceivedData
 import kotlinx.coroutines.flow.Flow
 
 interface IBleRepository {
@@ -41,5 +45,12 @@ interface IBleRepository {
     suspend fun updateDevice(scannedDevice: ScannedDevice)
 
     suspend fun deleteNotSeen()
+
+    // Received Data
+    suspend fun getReceivedDataByUuid(uuid: String): Flow<List<ReceivedData>>
+
+    suspend fun insertReceivedData(device: ReceivedData): Long
+
+    suspend fun deleteReceivedData()
 
 }

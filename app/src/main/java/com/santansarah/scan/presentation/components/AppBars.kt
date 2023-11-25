@@ -29,12 +29,9 @@ import com.santansarah.scan.domain.models.ScanUI
 import com.santansarah.scan.local.entities.ScannedDevice
 import com.santansarah.scan.local.entities.displayName
 import com.santansarah.scan.presentation.previewparams.FeatureParams
-import com.santansarah.scan.presentation.previewparams.LandscapeLayoutParams
-import com.santansarah.scan.presentation.previewparams.LandscapeLayouts
 import com.santansarah.scan.presentation.previewparams.PortraitLayoutParams
 import com.santansarah.scan.presentation.previewparams.PortraitLayouts
 import com.santansarah.scan.presentation.scan.device.DeviceButtons
-import com.santansarah.scan.presentation.scan.device.DeviceMenu
 import com.santansarah.scan.presentation.theme.SanTanScanTheme
 import com.santansarah.scan.presentation.theme.appBarTitle
 import com.santansarah.scan.utils.windowinfo.AppLayoutInfo
@@ -92,7 +89,7 @@ fun AppBarWithBackButton(
                 BackIcon(contentDesc = "Go Back")
             }
         },
-        actions = {
+       /* actions = {
             DeviceMenu(
                 device = deviceDetail.scannedDevice,
                 expanded = deviceMenuExpanded,
@@ -101,7 +98,7 @@ fun AppBarWithBackButton(
                 onFavorite = deviceEvents.onFavorite,
                 onForget = deviceEvents.onForget
             )
-        }
+        }*/
     )
 }
 
@@ -180,7 +177,6 @@ fun HomeAppBar(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun BasicBackTopAppBar(
-    appLayoutInfo: AppLayoutInfo,
     onBackClicked: () -> Unit,
     titleContent: @Composable () -> Unit
 ) {
@@ -209,7 +205,7 @@ fun BasicBackTopAppBar(
 @PortraitLayouts
 @Composable
 fun PreviewHomeBar() {
-    SanTanScanTheme() {
+    SanTanScanTheme {
         HomeAppBar(scanning = true, {}, {}, {}, true)
     }
 }
@@ -227,32 +223,7 @@ fun PreviewAppBar(
         customName = null,
         baseRssi = 0, favorite = false, forget = false
     )
-    SanTanScanTheme() {
-        AppBarWithBackButton(
-            appLayoutInfo = featureParams.appLayoutInfo,
-            onBackClicked = { /*TODO*/ },
-            scanUi = featureParams.scanState.scanUI,
-            deviceDetail = featureParams.detail,
-            deviceEvents = featureParams.scanState.deviceEvents,
-            bleConnectEvents = featureParams.scanState.bleConnectEvents,
-            onControlClick = {}
-        )
-    }
-}
-
-@LandscapeLayouts
-@Composable
-fun PreviewLandscapeAppBar(
-    @PreviewParameter(LandscapeLayoutParams::class) featureParams: FeatureParams
-) {
-    val device = ScannedDevice(
-        0, "ELK-BLEDOM", "24:A9:30:53:5A:97", -45,
-        "Microsoft", listOf("Human Readable Device"),
-        listOf("Windows 10 Desktop"), 0L,
-        customName = null,
-        baseRssi = 0, favorite = false, forget = false
-    )
-    SanTanScanTheme() {
+    SanTanScanTheme {
         AppBarWithBackButton(
             appLayoutInfo = featureParams.appLayoutInfo,
             onBackClicked = { /*TODO*/ },

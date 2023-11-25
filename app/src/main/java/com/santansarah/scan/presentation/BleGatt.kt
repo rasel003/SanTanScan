@@ -183,12 +183,12 @@ class BleGatt(
                     val notifyRegistered = btGatt?.setCharacteristicNotification(svcChar, true)
 
                     if (svcChar.properties and BluetoothGattCharacteristic.PROPERTY_NOTIFY > 0) {
-                        cccd.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)
+                        cccd.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
                         btGatt?.writeDescriptor(cccd)
                     }
 
                     if (svcChar.properties and BluetoothGattCharacteristic.PROPERTY_INDICATE > 0) {
-                        cccd.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE)
+                        cccd.value = BluetoothGattDescriptor.ENABLE_INDICATION_VALUE
                         btGatt?.writeDescriptor(cccd)
                     }
 
@@ -253,7 +253,7 @@ class BleGatt(
                     BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT
                 )
             } else {
-                foundChar.setValue(bytes)
+                foundChar.value = bytes
                 btGatt?.writeCharacteristic(foundChar)
             }
         }
@@ -268,7 +268,7 @@ class BleGatt(
                     btGatt?.writeDescriptor(foundDescriptor, bytes)
                 } else
                 {
-                    foundDescriptor.setValue(bytes)
+                    foundDescriptor.value = bytes
                     btGatt?.writeDescriptor(foundDescriptor)
                 }
             }

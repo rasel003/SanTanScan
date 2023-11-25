@@ -25,6 +25,13 @@ data class BleCharacteristic(
     val source: String,
     val uuid: String
 )
+@Entity(tableName = "received_data")
+data class ReceivedData(
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    val name: String,
+    val value: String,
+    val uuid: String
+)
 
 
 @Entity(tableName = "MicrosoftDevices")

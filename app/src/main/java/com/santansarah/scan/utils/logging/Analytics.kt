@@ -26,7 +26,7 @@ data class ScreenEvent(
     val uuid: String
 )
 
-class Analytics() :
+class Analytics :
     KoinComponent, IAnalytics {
 
     override fun logCharacteristicEvent(analyticsEvent: CharacteristicEvent) {

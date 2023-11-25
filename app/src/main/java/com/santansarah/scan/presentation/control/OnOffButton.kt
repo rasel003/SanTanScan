@@ -37,7 +37,7 @@ fun OnOffButton(
         MaterialTheme.colorScheme.tertiary.copy(.3f)
 
 
-    Row() {
+    Row {
         FilledIconButton(
             colors = IconButtonDefaults.filledIconButtonColors(
                 containerColor = onWasClicked,
