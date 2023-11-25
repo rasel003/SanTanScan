@@ -16,6 +16,7 @@ import com.santansarah.scan.domain.usecases.ParseDescriptor
 import com.santansarah.scan.domain.usecases.ParseNotification
 import com.santansarah.scan.domain.usecases.ParseRead
 import com.santansarah.scan.domain.usecases.ParseService
+import com.santansarah.scan.local.BleDataDao
 import com.santansarah.scan.local.BleRepository
 import com.santansarah.scan.local.entities.ReceivedData
 import com.santansarah.scan.utils.print
@@ -36,7 +37,7 @@ class BleGatt(
     private val parseRead: ParseRead,
     private val parseNotification: ParseNotification,
     private val parseDescriptor: ParseDescriptor,
-    private val bleRepository: BleRepository
+    private val bleRepository: BleDataDao
 ) : KoinComponent {
 
     private var btGatt: BluetoothGatt? = null
