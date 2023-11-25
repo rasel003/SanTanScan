@@ -27,11 +27,12 @@ data class BleCharacteristic(
 )
 @Entity(tableName = "received_data")
 data class ReceivedData(
-    @PrimaryKey(autoGenerate = true) val id: Int,
     val name: String,
     val value: String,
     val uuid: String
-)
+){
+    @PrimaryKey(autoGenerate = true) var id: Int = 0
+}
 
 
 @Entity(tableName = "MicrosoftDevices")

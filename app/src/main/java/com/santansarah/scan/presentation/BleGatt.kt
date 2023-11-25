@@ -16,6 +16,8 @@ import com.santansarah.scan.domain.usecases.ParseDescriptor
 import com.santansarah.scan.domain.usecases.ParseNotification
 import com.santansarah.scan.domain.usecases.ParseRead
 import com.santansarah.scan.domain.usecases.ParseService
+import com.santansarah.scan.local.BleRepository
+import com.santansarah.scan.local.entities.ReceivedData
 import com.santansarah.scan.utils.print
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -24,6 +26,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import timber.log.Timber
+import java.util.Calendar
 
 @SuppressLint("MissingPermission")
 class BleGatt(
@@ -32,7 +35,8 @@ class BleGatt(
     private val parseService: ParseService,
     private val parseRead: ParseRead,
     private val parseNotification: ParseNotification,
-    private val parseDescriptor: ParseDescriptor
+    private val parseDescriptor: ParseDescriptor,
+    private val bleRepository: BleRepository
 ) : KoinComponent {
 
     private var btGatt: BluetoothGatt? = null
@@ -107,7 +111,20 @@ class BleGatt(
         ) {
             super.onCharacteristicChanged(gatt, characteristic)
             Timber.d("characteristic changed: ${characteristic.value.print()}")
-            deviceDetails.value = parseNotification(deviceDetails.value, characteristic, characteristic.value)
+            deviceDetails.value =
+                parseNotification(deviceDetails.value, characteristic, characteristic.value)
+
+            scope.launch {
+
+                bleRepository.insertReceivedData(
+                    ReceivedData(
+                        name = Calendar.getInstance().timeInMillis.toString(),
+                        value = characteristic.value.print(),
+                        uuid = characteristic.value.print()
+                    )
+                )
+            }
+
         }
 
         override fun onCharacteristicChanged(
@@ -133,7 +150,8 @@ class BleGatt(
                         "${descriptor.characteristic.uuid}, $status, ${descriptor.value.print()}"
             )
 
-            deviceDetails.value = parseDescriptor(deviceDetails.value, descriptor, status, descriptor.value)
+            deviceDetails.value =
+                parseDescriptor(deviceDetails.value, descriptor, status, descriptor.value)
         }
 
         override fun onDescriptorRead(
@@ -266,8 +284,7 @@ class BleGatt(
             ?.also { foundDescriptor ->
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     btGatt?.writeDescriptor(foundDescriptor, bytes)
-                } else
-                {
+                } else {
                     foundDescriptor.value = bytes
                     btGatt?.writeDescriptor(foundDescriptor)
                 }

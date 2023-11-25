@@ -37,7 +37,7 @@ val appModule = module {
     factory { CoroutineScope(get<CoroutineDispatcher>(named("IODispatcher")) + Job()) }
 
     single { BleManager(get(), get(), get()) }
-    single { BleGatt(androidApplication(), get(), get(), get(), get(), get()) }
+    single { BleGatt(androidApplication(), get(), get(), get(), get(), get(), get()) }
 
     viewModel { ScanViewModel(get(), get(), get(), get(named("IODispatcher")), get()) }
     viewModel { ControlViewModel(get(), get(), get(named("IODispatcher")), get()) }
