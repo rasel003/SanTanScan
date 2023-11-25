@@ -107,7 +107,7 @@ fun ServicePagerDetail(
     ) {
 
         service.characteristics
-//            .filter { it.uuid.contains("E924", ignoreCase = true) }
+            .filter { it.uuid.contains("00001002", ignoreCase = true) }
             .forEach { char ->
             OutlinedCard(
                 modifier = Modifier
@@ -129,10 +129,10 @@ fun ServicePagerDetail(
                             modifier = Modifier.fillMaxWidth(.85f)
                         ) {
 
-                            Text(
+                           /* Text(
                                 text = char.name,
                                 style = MaterialTheme.typography.titleMedium
-                            )
+                            )*/
                             Text(
                                 text = char.uuid.uppercase(),
                                 style = MaterialTheme.typography.bodySmall
@@ -141,74 +141,11 @@ fun ServicePagerDetail(
 
                     }
 
-                    Spacer(modifier = Modifier.height(10.dp))
-
-
                     if (state == 0) {
                         ReadCharacteristic(char, onRead, onShowUserMessage)
-                    } else {
-                        WriteCharacteristic(char, onWrite)
                     }
 
-                    if (char.descriptors.isNotEmpty()) {
 
-                        char.descriptors.forEach { desc ->
-
-                            var descriptorState by rememberSaveable { mutableStateOf(0) }
-                            var descriptorExpanded by rememberSaveable { mutableStateOf(false) }
-
-                            Divider(modifier = Modifier.padding(vertical = 10.dp))
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.Top,
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-
-                                Column(
-                                    modifier = Modifier.fillMaxWidth(.85f)
-                                ) {
-
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Icon(
-                                            modifier = Modifier.size(22.dp),
-                                            painter = painterResource(id = R.drawable.descriptor),
-                                            contentDescription = "Descriptor Icon",
-                                            tint = MaterialTheme.colorScheme.onSecondary
-                                        )
-                                        Text(
-                                            modifier = Modifier.padding(start = 4.dp),
-                                            text = desc.name,
-                                            style = MaterialTheme.typography.labelLarge,
-                                            color = MaterialTheme.colorScheme.onSecondary
-                                        )
-                                    }
-                                    Text(
-                                        //modifier = Modifier.padding(start = 12.dp),
-                                        text = desc.uuid.uppercase(),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSecondary
-                                    )
-                                }
-
-                                ReadWriteMenu(
-                                    expanded = descriptorExpanded,
-                                    onExpanded = { descriptorExpanded = it },
-                                    onState = { descriptorState = it })
-                            }
-
-                            if (descriptorState == 0) {
-                                ReadDescriptor(
-                                    char.uuid,
-                                    descriptor = desc, onRead = onReadDescriptor,
-                                    onShowUserMessage = onShowUserMessage
-                                )
-                            } else
-                                WriteDescriptor(descriptor = desc, onWrite = onWriteDescriptor)
-
-                        }
-                        //}
-                    }
 
                 }
             }

@@ -38,42 +38,6 @@ fun ReadCharacteristic(
     onRead: (String) -> Unit,
     onShowUserMessage: (String) -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-        //.padding(6.dp)
-    ) {
-        AssistChip(
-            enabled = char.canRead,
-            label = { Text(text = "Read") },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(
-                        id = R.drawable.outline_arrow_circle_down
-                    ),
-                    contentDescription = "Read"
-                )
-            },
-            onClick = { onRead(char.uuid) })
-        Spacer(modifier = Modifier.width(10.dp))
-        val clipboardManager = LocalClipboardManager.current
-        AssistChip(
-            enabled = char.readBytes != null,
-            label = { Text(text = "Copy") },
-            leadingIcon = {
-                Icon(
-                    modifier = Modifier.size(22.dp),
-                    painter = painterResource(id = R.drawable.copy),
-                    contentDescription = "Copy"
-                )
-            },
-            onClick = {
-                clipboardManager.setText(
-                    AnnotatedString(char.getReadInfo())
-                )
-                onShowUserMessage("Data Copied.")
-            })
-    }
 
     Box(
         modifier =
