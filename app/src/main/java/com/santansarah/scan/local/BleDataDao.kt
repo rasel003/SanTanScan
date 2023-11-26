@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.Flow
 interface BleDataDao {
 
     @Query("SELECT * FROM received_data order by id limit 50")
-    fun getReceivedDataByUuid(): List<ReceivedData>
+    fun getReceivedDataByUuid(): Flow<List<ReceivedData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReceivedData(device: ReceivedData): Long

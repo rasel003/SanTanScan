@@ -60,14 +60,16 @@ class ScanViewModel(
             Pair(scanFilterOption, it)
         }
     }
+
     init {
         getReceivedData("dfkdk")
     }
 
     fun getReceivedData(uuid: String) {
         viewModelScope.launch(Dispatchers.IO) {
-           val data = bleRepository.getReceivedDataByUuid(uuid)
-            _dataFlow.value = data
+            bleRepository.getReceivedDataByUuid(uuid).collect {
+                _dataFlow.value = it
+            }
         }
     }
 
@@ -89,6 +91,8 @@ class ScanViewModel(
 
         if (deviceDetails != null)
             bleManager.scanEnabled = false
+
+//        getReceivedData("")
 
         ScanState(
             ScanUI(

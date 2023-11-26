@@ -126,7 +126,7 @@ class BleRepository(
 
 
     // Received Data
-    override suspend fun getReceivedDataByUuid(uuid: String): List<ReceivedData> = bleDataDao.getReceivedDataByUuid()
+    override suspend fun getReceivedDataByUuid(uuid: String): Flow<List<ReceivedData>> = bleDataDao.getReceivedDataByUuid()
 
     override suspend fun insertReceivedData(device: ReceivedData) = bleDataDao.insertReceivedData(device)
     override suspend fun deleteReceivedData() = bleDataDao.deleteReceivedData()

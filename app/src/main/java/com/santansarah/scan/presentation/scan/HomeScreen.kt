@@ -4,13 +4,11 @@ import android.content.Context
 import android.graphics.Color
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -31,7 +29,6 @@ import com.santansarah.scan.presentation.scan.device.ShowDeviceBody
 import com.santansarah.scan.presentation.scan.device.ShowDeviceDetail
 import com.santansarah.scan.presentation.theme.SanTanScanTheme
 import com.santansarah.scan.utils.windowinfo.AppLayoutInfo
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
@@ -56,7 +53,7 @@ fun HomeScreen(
 
     // Use AndroidView to embed the TextView into Compose
     AndroidView(
-        factory = { setupChart( context , getData(4, 50F), colors[0]) },
+        factory = { setupChart( context , getData(dataFlow), colors[0]) },
         modifier = Modifier
             .fillMaxWidth()
             .height(120.dp)
@@ -66,7 +63,7 @@ fun HomeScreen(
             //it.text = "Updated Text"
         }
     )
-    Text(text = dataFlow.joinToString { it.value })
+    Text(text = dataFlow.takeLast(15).joinToString { it.value })
 
     ShowDeviceBody(
         appLayoutInfo = appLayoutInfo,
@@ -104,6 +101,7 @@ private fun setupChart(context: Context, data: LineData, color: Int) : LineChart
     // enable scaling and dragging
     chart.isDragEnabled = true
     chart.setScaleEnabled(true)
+    chart.setVisibleXRangeMaximum(10F)
 
     // if disabled, scaling can be done on x- and y-axis separately
     chart.setPinchZoom(false)
@@ -130,13 +128,12 @@ private fun setupChart(context: Context, data: LineData, color: Int) : LineChart
     return chart
 }
 
-private fun getData(count: Int, range: Float): LineData {
+private fun getData(data: List<ReceivedData>): LineData {
     val values = ArrayList<Entry>()
-    for (i in 0 until count) {
-        val temp = (Math.random() * range).toFloat() + 3
-        values.add(Entry(i.toFloat(), temp))
-    }
+    data.takeLast(35).forEachIndexed { index, receivedData ->
+        values.add(Entry(index.toFloat(), receivedData.value.toFloat()*2))
 
+    }
     // create a dataset and give it a type
     val set1 = LineDataSet(values, "DataSet 1")
     // set1.setFillAlpha(110);
@@ -146,7 +143,7 @@ private fun getData(count: Int, range: Float): LineData {
     set1.circleHoleRadius = 2.5f
     set1.color = Color.WHITE
     set1.setCircleColor(Color.WHITE)
-    set1.setHighLightColor(Color.WHITE)
+    set1.highLightColor = Color.WHITE
     set1.setDrawValues(false)
 
     // create a data object with the data sets

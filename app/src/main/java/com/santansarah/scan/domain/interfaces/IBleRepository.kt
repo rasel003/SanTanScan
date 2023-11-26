@@ -48,7 +48,7 @@ interface IBleRepository {
     suspend fun deleteNotSeen()
 
     // Received Data
-    suspend fun getReceivedDataByUuid(uuid: String): List<ReceivedData>
+    suspend fun getReceivedDataByUuid(uuid: String): Flow<List<ReceivedData>>
 
     suspend fun insertReceivedData(device: ReceivedData): Long
 
