@@ -1,6 +1,7 @@
 package com.santansarah.scan.domain.interfaces
 
 import android.os.ParcelUuid
+import androidx.lifecycle.LiveData
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -47,7 +48,7 @@ interface IBleRepository {
     suspend fun deleteNotSeen()
 
     // Received Data
-    suspend fun getReceivedDataByUuid(uuid: String): Flow<List<ReceivedData>>
+    suspend fun getReceivedDataByUuid(uuid: String): List<ReceivedData>
 
     suspend fun insertReceivedData(device: ReceivedData): Long
 

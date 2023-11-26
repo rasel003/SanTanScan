@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -28,6 +30,7 @@ import com.santansarah.scan.presentation.scan.device.ShowDeviceBody
 import com.santansarah.scan.presentation.scan.device.ShowDeviceDetail
 import com.santansarah.scan.presentation.theme.SanTanScanTheme
 import com.santansarah.scan.utils.windowinfo.AppLayoutInfo
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
@@ -38,7 +41,8 @@ fun HomeScreen(
     isEditing: Boolean,
     onBackClicked: () -> Unit,
     onSave: (String) -> Unit,
-    onShowUserMessage: (String) -> Unit
+    onShowUserMessage: (String) -> Unit,
+    vm: ScanViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
     ShowDeviceDetail(
@@ -49,6 +53,8 @@ fun HomeScreen(
     )
     Spacer(modifier = Modifier.height(24.dp))
 
+    val list  = vm.dataFlow.collectAsState()
+    
 
     // Use AndroidView to embed the TextView into Compose
     AndroidView(
@@ -62,6 +68,7 @@ fun HomeScreen(
             //it.text = "Updated Text"
         }
     )
+    Text(text = list.value.joinToString { it.value })
 
     ShowDeviceBody(
         appLayoutInfo = appLayoutInfo,

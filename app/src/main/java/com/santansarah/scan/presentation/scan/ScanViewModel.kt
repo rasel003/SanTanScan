@@ -1,7 +1,10 @@
 package com.santansarah.scan.presentation.scan
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.santansarah.scan.local.entities.ScannedDevice
@@ -16,6 +19,7 @@ import com.santansarah.scan.domain.models.ScanFilterOption
 import com.santansarah.scan.domain.models.ScanState
 import com.santansarah.scan.domain.models.ScanUI
 import com.santansarah.scan.domain.models.emptyScanState
+import com.santansarah.scan.local.entities.ReceivedData
 import com.santansarah.scan.presentation.BleGatt
 import com.santansarah.scan.presentation.BleManager
 import com.santansarah.scan.utils.decodeHex
@@ -25,6 +29,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
@@ -45,6 +50,8 @@ class ScanViewModel(
 
     val isScanning by mutableStateOf(bleManager.isScanning)
     val scannerMessage = bleManager.userMessage
+    private val _dataFlow = MutableStateFlow<List<ReceivedData>>(emptyList())
+    val dataFlow: StateFlow<List<ReceivedData>> = _dataFlow
 
     private val _scanFilterOption = MutableStateFlow<ScanFilterOption?>(null)
     private val _devices = _scanFilterOption.flatMapLatest { scanFilterOption ->
@@ -52,6 +59,18 @@ class ScanViewModel(
             Pair(scanFilterOption, it)
         }
     }
+    init {
+        getReceivedData("dfkdk")
+    }
+
+    fun getReceivedData(uuid: String) {
+        viewModelScope.launch {
+           val data = bleRepository.getReceivedDataByUuid(uuid)
+            _dataFlow.value = data
+        }
+    }
+
+
     private val _selectedDevice = MutableStateFlow<ScannedDevice?>(null)
     private val _bleMessage = bleGatt.connectMessage
     private val _userMessage = MutableStateFlow<String?>(null)
@@ -154,6 +173,17 @@ class ScanViewModel(
         }
     }
 
+    fun getReceivedDataByUuid(scannedDevice: ScannedDevice) {
+        viewModelScope.launch(dispatcher) {
+
+            val isFavorite = !scannedDevice.favorite
+            val favoriteAction = if (isFavorite) "added to" else "removed from"
+
+            bleRepository.updateDevice(scannedDevice.copy(favorite = isFavorite))
+            showUserMessage("${scannedDevice.displayName()} $favoriteAction Favorites.")
+        }
+    }
+
     fun onForget(scannedDevice: ScannedDevice) {
         viewModelScope.launch(dispatcher) {
             bleRepository.updateDevice(scannedDevice.copy(forget = true))
@@ -194,9 +224,9 @@ class ScanViewModel(
         bleGatt.readCharacteristic(uuid)
         analytics.logCharacteristicEvent(
             CharacteristicEvent(
-            eventName = AnalyticsEventType.READ_CHARACTERISTIC.name,
-            uuid = uuid
-        )
+                eventName = AnalyticsEventType.READ_CHARACTERISTIC.name,
+                uuid = uuid
+            )
         )
         //showUserMessage("Request sent.")
     }
@@ -237,9 +267,9 @@ class ScanViewModel(
                 bleGatt.writeBytes(uuid, bytes.decodeHex())
                 analytics.logCharacteristicEvent(
                     CharacteristicEvent(
-                    eventName = AnalyticsEventType.WRITE_CHARACTERISTIC.name,
-                    uuid = uuid
-                )
+                        eventName = AnalyticsEventType.WRITE_CHARACTERISTIC.name,
+                        uuid = uuid
+                    )
                 )
             } else
                 showUserMessage("Hex can't be null.")
