@@ -23,6 +23,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.santansarah.scan.domain.models.DeviceEvents
 import com.santansarah.scan.domain.models.ScanState
+import com.santansarah.scan.local.entities.ReceivedData
 import com.santansarah.scan.presentation.previewparams.DevicePortraitParams
 import com.santansarah.scan.presentation.previewparams.FeatureParams
 import com.santansarah.scan.presentation.previewparams.PortraitLayouts
@@ -42,7 +43,7 @@ fun HomeScreen(
     onBackClicked: () -> Unit,
     onSave: (String) -> Unit,
     onShowUserMessage: (String) -> Unit,
-    vm: ScanViewModel = koinViewModel()
+    dataFlow: List<ReceivedData>
 ) {
     val context = LocalContext.current
     ShowDeviceDetail(
@@ -52,9 +53,6 @@ fun HomeScreen(
         appLayoutInfo = appLayoutInfo
     )
     Spacer(modifier = Modifier.height(24.dp))
-
-    val list  = vm.dataFlow.collectAsState()
-    
 
     // Use AndroidView to embed the TextView into Compose
     AndroidView(
@@ -68,7 +66,7 @@ fun HomeScreen(
             //it.text = "Updated Text"
         }
     )
-    Text(text = list.value.joinToString { it.value })
+    Text(text = dataFlow.joinToString { it.value })
 
     ShowDeviceBody(
         appLayoutInfo = appLayoutInfo,
@@ -170,7 +168,8 @@ fun PreviewHomeScreen(
                 onSave = {},
                 isEditing = false,
                 onBackClicked = {},
-                deviceEvents = DeviceEvents({}, {}, {}, {}, {})
+                deviceEvents = DeviceEvents({}, {}, {}, {}, {}),
+                dataFlow = emptyList()
             )
         }
     }

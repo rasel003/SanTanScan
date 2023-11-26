@@ -21,6 +21,7 @@ import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.santansarah.scan.domain.models.ScanFilterOption
 import com.santansarah.scan.domain.models.ScanState
+import com.santansarah.scan.local.entities.ReceivedData
 import com.santansarah.scan.presentation.components.AppBarWithBackButton
 import com.santansarah.scan.presentation.components.HomeAppBar
 import com.santansarah.scan.presentation.components.ShowPermissions
@@ -29,7 +30,7 @@ import com.santansarah.scan.utils.windowinfo.AppLayoutInfo
 import org.koin.androidx.compose.koinViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeRoute(
     vm: ScanViewModel = koinViewModel(),
@@ -43,6 +44,7 @@ fun HomeRoute(
     val multiplePermissionsState = rememberMultiplePermissionsState(permissions = permissionsList)
     val isScanning = vm.isScanning.collectAsStateWithLifecycle().value
     val isEditing = vm.isEditing.collectAsStateWithLifecycle().value
+    val dataFlow = vm.dataFlow.collectAsStateWithLifecycle().value
 
     BackHandler {
         if (scanState.scanUI.selectedDevice != null) run {
@@ -84,7 +86,8 @@ fun HomeRoute(
         onControlClick = onControlClick,
         onFilter = vm::onFilter,
         onShowUserMessage = vm::showUserMessage,
-        onHelpClicked = onHelpClicked
+        onHelpClicked = onHelpClicked,
+        dataFlow
     )
 
 }
@@ -103,7 +106,8 @@ fun HomeLayout(
     onControlClick: (String) -> Unit,
     onFilter: (ScanFilterOption?) -> Unit,
     onShowUserMessage: (String) -> Unit,
-    onHelpClicked: () -> Unit
+    onHelpClicked: () -> Unit,
+    dataFlow: List<ReceivedData>
 ) {
 
     val selectedDevice = scanState.scanUI.selectedDevice
@@ -174,7 +178,8 @@ fun HomeLayout(
                         deviceEvents = scanState.deviceEvents,
                         isEditing = isEditing,
                         onBackClicked = scanState.deviceEvents.onBack,
-                        onSave = scanState.deviceEvents.onSave
+                        onSave = scanState.deviceEvents.onSave,
+                        dataFlow = dataFlow
                     )
 
                 }

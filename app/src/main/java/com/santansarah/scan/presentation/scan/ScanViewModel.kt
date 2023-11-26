@@ -26,6 +26,7 @@ import com.santansarah.scan.utils.decodeHex
 import com.santansarah.scan.utils.logging.AnalyticsEventType
 import com.santansarah.scan.utils.logging.CharacteristicEvent
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -64,7 +65,7 @@ class ScanViewModel(
     }
 
     fun getReceivedData(uuid: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
            val data = bleRepository.getReceivedDataByUuid(uuid)
             _dataFlow.value = data
         }

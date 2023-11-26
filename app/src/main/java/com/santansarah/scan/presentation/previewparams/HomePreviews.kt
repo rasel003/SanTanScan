@@ -45,7 +45,8 @@ fun HomeLayoutPreview(
                 onControlClick = {},
                 onFilter = {},
                 onShowUserMessage = {},
-                onHelpClicked = {}
+                onHelpClicked = {},
+                dataFlow = emptyList()
             )
         }
     }
@@ -85,7 +86,8 @@ fun HomeLayoutNarrowPreview(
                 onControlClick = {},
                 onFilter = {},
                 onShowUserMessage = {},
-                onHelpClicked = {}
+                onHelpClicked = {},
+                dataFlow = emptyList()
             )
         }
     }
@@ -125,7 +127,8 @@ fun HomeLandscapeLayoutPreview(
                 onControlClick = {},
                 onFilter = {},
                 onShowUserMessage = {},
-                onHelpClicked = {}
+                onHelpClicked = {},
+                dataFlow = emptyList()
             )
         }
     }
@@ -165,7 +168,8 @@ fun HomeLayoutBigPreview(
                 onControlClick = {},
                 onFilter = {},
                 onShowUserMessage = {},
-                onHelpClicked = {}
+                onHelpClicked = {},
+                dataFlow = emptyList()
             )
         }
     }
