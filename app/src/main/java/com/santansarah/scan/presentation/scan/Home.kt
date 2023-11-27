@@ -11,6 +11,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,7 +45,7 @@ fun HomeRoute(
     val multiplePermissionsState = rememberMultiplePermissionsState(permissions = permissionsList)
     val isScanning = vm.isScanning.collectAsStateWithLifecycle().value
     val isEditing = vm.isEditing.collectAsStateWithLifecycle().value
-    val dataFlow = vm.dataFlow.collectAsStateWithLifecycle().value
+    val dataFlow = vm.dataFlow.collectAsState().value
 
     BackHandler {
         if (scanState.scanUI.selectedDevice != null) run {
@@ -174,7 +175,6 @@ fun HomeLayout(
                         appLayoutInfo = appLayoutInfo,
                         scanState = scanState,
                         onControlClick = onControlClick,
-                        onShowUserMessage = onShowUserMessage,
                         deviceEvents = scanState.deviceEvents,
                         isEditing = isEditing,
                         onBackClicked = scanState.deviceEvents.onBack,

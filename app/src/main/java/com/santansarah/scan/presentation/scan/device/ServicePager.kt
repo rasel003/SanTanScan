@@ -1,8 +1,6 @@
 package com.santansarah.scan.presentation.scan.device
 
-import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Color
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,11 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -24,21 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.santansarah.scan.R
 import com.santansarah.scan.domain.models.DeviceDetail
 import com.santansarah.scan.domain.models.DeviceService
 import com.santansarah.scan.presentation.previewparams.PreviewDeviceDetailProvider
@@ -51,11 +37,7 @@ import com.santansarah.scan.utils.windowinfo.AppLayoutMode
 fun ServicePager(
     appLayoutInfo: AppLayoutInfo,
     selectedDevice: DeviceDetail,
-    onRead: (String) -> Unit,
-    onShowUserMessage: (String) -> Unit,
-    onWrite: (String, String) -> Unit,
-    onReadDescriptor: (String, String) -> Unit,
-    onWriteDescriptor: (String, String, String) -> Unit
+    onRead: (String) -> Unit
 ) {
 
     val mainBodyModifier = when(appLayoutInfo.appLayoutMode) {
@@ -76,11 +58,7 @@ fun ServicePager(
 
             ServicePagerDetail(
                 services[currentServiceIdx],
-                onRead,
-                onShowUserMessage,
-                onWrite,
-                onReadDescriptor,
-                onWriteDescriptor
+                onRead
             )
         }
     }
@@ -92,11 +70,7 @@ fun ServicePager(
 @Composable
 fun ServicePagerDetail(
     service: DeviceService,
-    onRead: (String) -> Unit,
-    onShowUserMessage: (String) -> Unit,
-    onWrite: (String, String) -> Unit,
-    onReadDescriptor: (String, String) -> Unit,
-    onWriteDescriptor: (String, String, String) -> Unit
+    onRead: (String) -> Unit
 ) {
 
     Column(
@@ -142,7 +116,7 @@ fun ServicePagerDetail(
                     }
 
                     if (state == 0) {
-                        ReadCharacteristic(char, onRead, onShowUserMessage)
+                        ReadCharacteristic(char, onRead)
                     }
 
 
@@ -179,12 +153,7 @@ fun PreviewServicePager(
                     foldableInfo = null
                 ),
                 deviceDetail,
-                {},
-                {},
-                { _: String, _: String -> },
-                { _: String, _: String -> },
-                { _: String, _: String, _: String -> },
-            )
+            ) {}
         }
     }
 }

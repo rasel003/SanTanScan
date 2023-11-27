@@ -1,14 +1,10 @@
 package com.santansarah.scan.presentation.scan
 
+import android.os.Handler
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.santansarah.scan.local.entities.ScannedDevice
-import com.santansarah.scan.local.entities.displayName
 import com.santansarah.scan.domain.interfaces.IAnalytics
 import com.santansarah.scan.domain.interfaces.IBleRepository
 import com.santansarah.scan.domain.models.BleConnectEvents
@@ -20,6 +16,8 @@ import com.santansarah.scan.domain.models.ScanState
 import com.santansarah.scan.domain.models.ScanUI
 import com.santansarah.scan.domain.models.emptyScanState
 import com.santansarah.scan.local.entities.ReceivedData
+import com.santansarah.scan.local.entities.ScannedDevice
+import com.santansarah.scan.local.entities.displayName
 import com.santansarah.scan.presentation.BleGatt
 import com.santansarah.scan.presentation.BleManager
 import com.santansarah.scan.utils.decodeHex
@@ -28,6 +26,7 @@ import com.santansarah.scan.utils.logging.CharacteristicEvent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -38,6 +37,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.Timer
+import kotlin.random.Random
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -63,6 +64,20 @@ class ScanViewModel(
 
     init {
         getReceivedData("dfkdk")
+
+        viewModelScope.launch(Dispatchers.IO) {
+            while (true) {
+                bleRepository.insertReceivedData(
+                    ReceivedData(
+                        name = "ad",
+                        value = (20..30).random().toString(),
+                        uuid = "dfd"
+                    )
+                )
+                delay(1000)
+            }
+        }
+
     }
 
     fun getReceivedData(uuid: String) {
