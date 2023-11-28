@@ -60,6 +60,11 @@ fun HomeScreen(
     dataFlow: List<ReceivedData>
 ) {
     val context = LocalContext.current
+    var dataPoints by remember { mutableStateOf(generateDataPoints()) }
+    var count by remember { mutableStateOf(dataPoints.size) }
+
+    var lineChart by remember { mutableStateOf<LineChart?>(null) }
+
     ShowDeviceDetail(
         scanState = scanState,
         onBackClicked = onBackClicked,
@@ -71,29 +76,8 @@ fun HomeScreen(
 
     Text(text = dataFlow.takeLast(15).joinToString { it.value })
 
-    MyChart()
-
-    ShowDeviceBody(
-        appLayoutInfo = appLayoutInfo,
-        scanUi = scanState.scanUI,
-        onEdit = deviceEvents.onIsEditing,
-        isEditing = isEditing,
-        onSave = onSave
-    ) {
-
-    }
-}
-
-@Composable
-fun MyChart() {
-    var dataPoints by remember { mutableStateOf(generateDataPoints()) }
-    var count by remember { mutableStateOf(dataPoints.size) }
-
-    var lineChart by remember { mutableStateOf<LineChart?>(null) }
-
     Column(
         modifier = Modifier
-            .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
     ) {
@@ -118,13 +102,12 @@ fun MyChart() {
                         }
 
                         val dataSet = LineDataSet(entries, "Data Set")
-                        dataSet.colors = ColorTemplate.COLORFUL_COLORS.toList()
                         val lineData = LineData(dataSet)
                         this.data = lineData
 
                         // Enable drag and scaling on the x-axis
                         isDragEnabled = true
-                        setScaleXEnabled(true)
+                        isScaleXEnabled = true
 
                         // Customize X-axis
                         // Set X-axis range
@@ -134,8 +117,8 @@ fun MyChart() {
 
                         // Set an initial visible range on the x-axis
                         val visibleRange = 3f
-                       setVisibleXRangeMaximum(visibleRange)
-                       setVisibleXRangeMinimum(visibleRange)
+                        setVisibleXRangeMaximum(visibleRange)
+                        setVisibleXRangeMinimum(visibleRange)
                     }
                 },
                 modifier = Modifier
@@ -191,6 +174,16 @@ fun MyChart() {
             Spacer(modifier = Modifier.width(8.dp))
             Text("Add Random Data Point (Max 30)")
         }
+    }
+
+    ShowDeviceBody(
+        appLayoutInfo = appLayoutInfo,
+        scanUi = scanState.scanUI,
+        onEdit = deviceEvents.onIsEditing,
+        isEditing = isEditing,
+        onSave = onSave
+    ) {
+
     }
 }
 
