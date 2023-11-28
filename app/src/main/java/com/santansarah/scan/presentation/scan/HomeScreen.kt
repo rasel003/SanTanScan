@@ -166,9 +166,11 @@ fun HomeScreen(
         onSave = onSave
     ) {
         it.toFloatOrNull()?.let { value ->
-            val point = DataPoint(count.toFloat(), value)
-            dataPoints += point
-            count++
+            if(dataPoints.last().y != value) {
+                val point = DataPoint(count.toFloat(), value)
+                dataPoints += point
+                count++
+            }
         }
     }
 }
