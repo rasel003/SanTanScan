@@ -1,7 +1,9 @@
 package com.santansarah.scan.presentation.scan
 
+import android.content.Context
 import android.graphics.Color
-import androidx.compose.foundation.background
+import android.os.Environment
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +15,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -39,6 +40,13 @@ import com.santansarah.scan.presentation.scan.device.ShowDeviceBody
 import com.santansarah.scan.presentation.scan.device.ShowDeviceDetail
 import com.santansarah.scan.presentation.theme.SanTanScanTheme
 import com.santansarah.scan.utils.windowinfo.AppLayoutInfo
+import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.UUID
 
 @Composable
 fun HomeScreen(
@@ -63,11 +71,7 @@ fun HomeScreen(
         appLayoutInfo = appLayoutInfo
     )
 
-    Column(
-        modifier = Modifier
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
-    ) {
+    Column {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -83,7 +87,8 @@ fun HomeScreen(
                         val xAxis: XAxis = xAxis
                         xAxis.position = XAxis.XAxisPosition.BOTTOM
                         xAxis.setDrawGridLines(false)
-                        xAxis.labelRotationAngle = -45f // Optional: Rotate labels for better visibility
+                        xAxis.labelRotationAngle =
+                            -45f // Optional: Rotate labels for better visibility
 
                         // Customize Y-axis
                         axisLeft.setDrawGridLines(false)
@@ -108,7 +113,6 @@ fun HomeScreen(
                         val entries = dataPoints.mapIndexed { index, dataPoint ->
                             Entry(index.toFloat(), dataPoint.y)
                         }
-                        val maxYValue = 30f  // Set your desired maximum y-value here
 
                         val dataSet = LineDataSet(entries, "values in seconds").apply {
 
@@ -126,9 +130,6 @@ fun HomeScreen(
                         setVisibleXRangeMaximum(visibleRange)
                         setVisibleXRangeMinimum(visibleRange)
 
-                        // Set a maximum value on the y-axis label
-                        axisLeft.axisMaximum = maxYValue
-
                         invalidate()
                         moveViewToX(count.toFloat())
                     }
@@ -141,7 +142,7 @@ fun HomeScreen(
         Button(
             onClick = {
                 val randomValue = java.util.Random()
-                    .nextInt(10) + 20.toFloat() // Example: Random data between 10 and 30
+                    .nextInt(150) + 10.toFloat() // Example: Random data between 10 and 30
                 val point = DataPoint(count.toFloat(), randomValue)
                 dataPoints += point
                 count++
@@ -152,6 +153,9 @@ fun HomeScreen(
             Spacer(modifier = Modifier.width(8.dp))
             Text("Add Random Data Point (Max 30)")
         }
+
+        // Call the composable function to create the file in external storage
+        CreateFileInExternalStorage(dataPoints)
     }
 
     ShowDeviceBody(
@@ -169,6 +173,64 @@ fun HomeScreen(
     }
 }
 
+@Composable
+fun CreateFileInExternalStorage(values: List<DataPoint>) {
+    val context = LocalContext.current
+
+    // Display a button to create the file
+    Button(onClick = { createFileInExternalStorage(values,context) }) {
+        Text("Create File in External Storage")
+    }
+}
+
+private fun createFileInExternalStorage(values: List<DataPoint>, context: Context) {
+
+    // Check if external storage is writable
+    if (isExternalStorageWritable()) {
+
+        // Get the Documents directory
+        val documentsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+
+
+        // Generate a filename with current date and time
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val fileName = "File_$timeStamp.txt"
+
+        // Create a new File object with the directory and the random file name
+        val file = File(documentsDirectory, fileName)
+
+        // Write values to the file
+        writeToFile(file, values)
+
+        // Display a message
+        val message ="File created in external storage at: ${file.absolutePath}"
+        Timber.d(message)
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    } else {
+        // Handle the case where external storage is not writable
+        val message = "External storage is not writable"
+        Timber.d(message)
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+}
+
+
+
+private fun isExternalStorageWritable(): Boolean {
+    val state = android.os.Environment.getExternalStorageState()
+    return android.os.Environment.MEDIA_MOUNTED == state
+}
+
+private fun writeToFile(file: File, values: List<DataPoint>) {
+    // Open the file in write mode
+    FileOutputStream(file).use { outputStream ->
+        // Write each value to a new line in the file
+        values.forEach { value ->
+            outputStream.write("x: ${value.x}, y: ${value.y}\n".toByteArray())
+        }
+    }
+}
+
 data class DataPoint(val x: Float, val y: Float)
 
 
@@ -180,6 +242,7 @@ fun generateDataPoints(count: Int = 1): List<DataPoint> {
         DataPoint(it.toFloat(), randomValue)
     }
 }
+
 
 @PortraitLayouts
 @Composable
