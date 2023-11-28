@@ -31,7 +31,6 @@ import com.santansarah.scan.presentation.theme.SanTanScanTheme
 import com.santansarah.scan.utils.windowinfo.AppLayoutInfo
 import com.santansarah.scan.utils.windowinfo.AppLayoutMode
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScanFilters(
     onFilter: (ScanFilterOption?) -> Unit,
@@ -41,8 +40,8 @@ fun ScanFilters(
 
     //val filterState = rememberSaveable { mutableStateOf(-1) }
     Surface(
-        color = MaterialTheme.colorScheme.secondaryContainer,
-        contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+//        color = MaterialTheme.colorScheme.secondaryContainer,
+//        contentColor = MaterialTheme.colorScheme.secondaryContainer
     ) {
         if (appLayoutInfo.appLayoutMode.isLandscape()) {
 
@@ -106,7 +105,7 @@ private fun ScanFilterButtons(
             colors = FilterChipDefaults.filterChipColors(
                 selectedContainerColor = MaterialTheme.colorScheme.secondary,
                 selectedLabelColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                labelColor = MaterialTheme.colorScheme.onSecondaryContainer
+                labelColor = MaterialTheme.colorScheme.secondary
             ),
             selected = scanFilterOption?.ordinal == index,
             onClick = {

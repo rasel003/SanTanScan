@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun BackIcon(
@@ -13,6 +14,7 @@ fun BackIcon(
 ) {
     Icon(
         imageVector = Icons.Default.ArrowBack,
+        tint = Color.Black, // Set your desired color here
         contentDescription = contentDesc
     )
 }

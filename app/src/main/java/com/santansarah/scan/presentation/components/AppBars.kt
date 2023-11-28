@@ -59,8 +59,8 @@ fun AppBarWithBackButton(
             bottom = 0.dp
         ),
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = Color(0xFF00005d),
-            titleContentColor = Color(0xFFcaccd9),
+            containerColor = Color.White,
+            titleContentColor = Color.Black,
             navigationIconContentColor = MaterialTheme.colorScheme
                 .onPrimary.copy(.7f)
         ),
@@ -122,8 +122,8 @@ fun HomeAppBar(
             bottom = 0.dp
         ),
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = Color(0xFF00005d),
-            titleContentColor = Color(0xFFcaccd9),
+            containerColor = Color.White,
+            titleContentColor = Color.Black,
             navigationIconContentColor = MaterialTheme.colorScheme
                 .onPrimary.copy(.7f)
         ),

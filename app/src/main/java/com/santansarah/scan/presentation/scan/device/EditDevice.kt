@@ -1,7 +1,6 @@
 package com.santansarah.scan.presentation.scan.device
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,11 +33,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.santansarah.scan.R
 import com.santansarah.scan.presentation.theme.SanTanScanTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -136,18 +132,6 @@ SanTanScanTheme {
         modifier = Modifier
             .fillMaxSize()
     ) {
-
-        val backgroundImage = if (isSystemInDarkTheme())
-            painterResource(id = R.drawable.ble_background_dark)
-        else
-            painterResource(id = R.drawable.ble_background)
-
-        Image(
-            painter = backgroundImage,
-            contentDescription = "",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.FillBounds,
-        )
 
         Surface(
             color = Color.Transparent,

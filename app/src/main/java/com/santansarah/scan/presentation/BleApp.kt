@@ -32,27 +32,10 @@ fun BleApp(
             .fillMaxSize()
     ) {
 
-        val backgroundImage = if (isSystemInDarkTheme())
-            painterResource(id = R.drawable.ble_background_dark)
-        else
-            painterResource(id = R.drawable.ble_background)
 
-        if (!isSystemInDarkTheme()) {
-            Image(
-                painter = backgroundImage,
-                contentDescription = "",
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillBounds,
-            )
-        }
-
-        val backgroundColor = if (!isSystemInDarkTheme())
-            Color.Transparent
-        else
-            MaterialTheme.colorScheme.tertiary
 
         Surface(
-            color = backgroundColor,
+            color = Color.White,
             modifier = Modifier
                 .statusBarsPadding()
                 .navigationBarsPadding()

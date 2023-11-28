@@ -43,11 +43,8 @@ fun HomeLayoutPreview(
                 startScan = { /*TODO*/ },
                 stopScan = { /*TODO*/ },
                 onControlClick = {},
-                onFilter = {},
-                onShowUserMessage = {},
-                onHelpClicked = {},
-                dataFlow = emptyList()
-            )
+                onFilter = {}
+            ) {}
         }
     }
 }
@@ -84,11 +81,8 @@ fun HomeLayoutNarrowPreview(
                 startScan = { /*TODO*/ },
                 stopScan = { /*TODO*/ },
                 onControlClick = {},
-                onFilter = {},
-                onShowUserMessage = {},
-                onHelpClicked = {},
-                dataFlow = emptyList()
-            )
+                onFilter = {}
+            ) {}
         }
     }
 }
@@ -125,11 +119,8 @@ fun HomeLandscapeLayoutPreview(
                 startScan = { /*TODO*/ },
                 stopScan = { /*TODO*/ },
                 onControlClick = {},
-                onFilter = {},
-                onShowUserMessage = {},
-                onHelpClicked = {},
-                dataFlow = emptyList()
-            )
+                onFilter = {}
+            ) {}
         }
     }
 }
@@ -166,11 +157,8 @@ fun HomeLayoutBigPreview(
                 startScan = { /*TODO*/ },
                 stopScan = { /*TODO*/ },
                 onControlClick = {},
-                onFilter = {},
-                onShowUserMessage = {},
-                onHelpClicked = {},
-                dataFlow = emptyList()
-            )
+                onFilter = {}
+            ) {}
         }
     }
 }

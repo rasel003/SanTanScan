@@ -22,7 +22,6 @@ import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.santansarah.scan.domain.models.ScanFilterOption
 import com.santansarah.scan.domain.models.ScanState
-import com.santansarah.scan.local.entities.ReceivedData
 import com.santansarah.scan.presentation.components.AppBarWithBackButton
 import com.santansarah.scan.presentation.components.HomeAppBar
 import com.santansarah.scan.presentation.components.ShowPermissions
@@ -45,7 +44,6 @@ fun HomeRoute(
     val multiplePermissionsState = rememberMultiplePermissionsState(permissions = permissionsList)
     val isScanning = vm.isScanning.collectAsStateWithLifecycle().value
     val isEditing = vm.isEditing.collectAsStateWithLifecycle().value
-    val dataFlow = vm.dataFlow.collectAsState().value
 
     BackHandler {
         if (scanState.scanUI.selectedDevice != null) run {
@@ -86,9 +84,7 @@ fun HomeRoute(
         stopScan = vm::stopScan,
         onControlClick = onControlClick,
         onFilter = vm::onFilter,
-        onShowUserMessage = vm::showUserMessage,
-        onHelpClicked = onHelpClicked,
-        dataFlow
+        onHelpClicked = onHelpClicked
     )
 
 }
@@ -106,9 +102,7 @@ fun HomeLayout(
     stopScan: () -> Unit,
     onControlClick: (String) -> Unit,
     onFilter: (ScanFilterOption?) -> Unit,
-    onShowUserMessage: (String) -> Unit,
-    onHelpClicked: () -> Unit,
-    dataFlow: List<ReceivedData>
+    onHelpClicked: () -> Unit
 ) {
 
     val selectedDevice = scanState.scanUI.selectedDevice

@@ -2,7 +2,6 @@ package com.santansarah.scan.presentation.scan
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,10 +14,6 @@ import androidx.compose.ui.unit.dp
 import com.santansarah.scan.domain.models.ScanFilterOption
 import com.santansarah.scan.local.entities.ScannedDevice
 import com.santansarah.scan.presentation.previewparams.FeatureParams
-import com.santansarah.scan.presentation.previewparams.LandscapeBig
-import com.santansarah.scan.presentation.previewparams.LandscapeBigListParams
-import com.santansarah.scan.presentation.previewparams.LandscapeLayouts
-import com.santansarah.scan.presentation.previewparams.LandscapeListParams
 import com.santansarah.scan.presentation.previewparams.PortraitLayouts
 import com.santansarah.scan.presentation.previewparams.PortraitListParams
 import com.santansarah.scan.presentation.theme.SanTanScanTheme
