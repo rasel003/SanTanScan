@@ -92,40 +92,25 @@ fun HomeScreen(
                     LineChart(it).apply {
                         lineChart = this
                         setNoDataText("Loading...") // Set an empty string to avoid the "Loading..." message
-                        xAxis.position = XAxis.XAxisPosition.BOTTOM
-                        xAxis.setDrawGridLines(false)
-                        axisLeft.setDrawGridLines(false)
-                        axisRight.setDrawGridLines(false)
 
                         // Add this block to set initial data
                         val entries = dataPoints.mapIndexed { index, dataPoint ->
                             Entry(index.toFloat(), dataPoint.y)
                         }
 
-                        val dataSet = LineDataSet(entries, "Data Set")
-                        dataSet.color = Color.BLUE
-                        dataSet.valueTextColor = Color.BLACK
-                        val lineData = LineData(dataSet)
-                        this.data = lineData
+                        // Customize X-axis
+                        val xAxis: XAxis = xAxis
+                        xAxis.position = XAxis.XAxisPosition.BOTTOM
+                        xAxis.setDrawGridLines(false)
+                        xAxis.labelRotationAngle = -45f // Optional: Rotate labels for better visibility
+
+                        // Customize Y-axis
+                        axisLeft.setDrawGridLines(false)
+                        axisRight.setDrawGridLines(false)
 
                         // Enable drag and scaling on the x-axis
                         isDragEnabled = true
-                        isScaleXEnabled = true
-
-                        axisLeft.axisMaximum = 30F
-                        axisLeft.axisMinimum = 0F
-
-                        // Customize X-axis
-                        // Set X-axis range
-                        xAxis.axisMinimum = 1f
-                        xAxis.axisMaximum = 10f
-                        xAxis.labelRotationAngle =
-                            -45f // Optional: Rotate labels for better visibility
-
-                        // Set an initial visible range on the x-axis
-                        val visibleRange = 10f
-                        setVisibleXRangeMaximum(visibleRange)
-                        setVisibleXRangeMinimum(visibleRange)
+                        setScaleXEnabled(true)
                     }
                 },
                 modifier = Modifier
@@ -134,19 +119,30 @@ fun HomeScreen(
                     .padding(16.dp),
                 update = {
                     // Update the chart if needed
-                    // Update the chart if needed
                     lineChart?.apply {
-                        data.getDataSetByIndex(0).clear()
+
+                        //data.getDataSetByIndex(0).clear()
                         val entries = dataPoints.mapIndexed { index, dataPoint ->
                             Entry(index.toFloat(), dataPoint.y)
                         }
+                        val maxYValue = 30f  // Set your desired maximum y-value here
 
-                        entries.forEach {
-                            data.getDataSetByIndex(0).addEntry(it)
-                        }
+                        val dataSet = LineDataSet(entries, "Label")
+                        dataSet.color = Color.BLUE
+                        dataSet.valueTextColor = Color.BLACK
 
-                        data.notifyDataChanged()
-                        notifyDataSetChanged()
+                        val lineData = LineData(dataSet)
+                        data = lineData
+
+                        // Set an initial visible range on the x-axis
+                        val visibleRange = 20f
+                        setVisibleXRangeMaximum(visibleRange)
+                        setVisibleXRangeMinimum(visibleRange)
+
+                        // Set a maximum value on the y-axis label
+                        axisLeft.axisMaximum = maxYValue
+
+                        invalidate()
                         moveViewToX(count.toFloat())
                     }
                 }
@@ -169,9 +165,8 @@ fun HomeScreen(
 
         Button(
             onClick = {
-                val value = Random.nextFloat() * 30
-                // Ensure the random value is within the desired range (0 to 30)
-                val point = DataPoint(count.toFloat(), value.coerceIn(0f, 30f))
+                val randomValue = java.util.Random().nextInt(10) + 20.toFloat() // Example: Random data between 10 and 30
+                val point = DataPoint(count.toFloat(), randomValue)
                 dataPoints += point
                 count++
             },
@@ -190,12 +185,11 @@ fun HomeScreen(
         isEditing = isEditing,
         onSave = onSave
     ) {
-        it.toFloatOrNull()?.let {
-            val point = DataPoint(count.toFloat(), it)
+        it.toFloatOrNull()?.let {value ->
+            val point = DataPoint(count.toFloat(), value)
             dataPoints += point
             count++
         }
-
     }
 }
 
@@ -204,7 +198,9 @@ data class DataPoint(val x: Float, val y: Float)
 
 fun generateDataPoints(count: Int = 1): List<DataPoint> {
     return List(count) {
-        DataPoint(it.toFloat(), Random.nextFloat() * 100)
+        val randomValue = java.util.Random().nextInt(10) + 20.toFloat() // Example: Random data between 10 and 30
+
+        DataPoint(it.toFloat(), randomValue)
     }
 }
 
