@@ -178,8 +178,7 @@ fun HomeLayout(
                         deviceEvents = scanState.deviceEvents,
                         isEditing = isEditing,
                         onBackClicked = scanState.deviceEvents.onBack,
-                        onSave = scanState.deviceEvents.onSave,
-                        dataFlow = dataFlow
+                        onSave = scanState.deviceEvents.onSave
                     )
 
                 }
