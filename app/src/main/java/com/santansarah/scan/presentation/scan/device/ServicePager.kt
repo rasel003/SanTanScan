@@ -52,7 +52,6 @@ fun ServicePager(
             modifier = mainBodyModifier
         ) {
             val services = selectedDevice.services
-            //            var currentServiceIdx by rememberSaveable { mutableStateOf(0) }
             val currentServiceIdx = services.indexOfFirst { it.name.contains("Mfr", true) }.takeIf { it >= 0 } ?: 0
 
 
@@ -85,7 +84,7 @@ fun ServicePagerDetail(
             .forEach { char ->
             OutlinedCard(
                 modifier = Modifier
-                    .defaultMinSize(minHeight = 200.dp)
+                    .defaultMinSize(minHeight = 50.dp)
             ) {
                 val state by rememberSaveable { mutableStateOf(0) }
 
@@ -93,34 +92,9 @@ fun ServicePagerDetail(
                     modifier = Modifier.padding(6.dp)
                 ) {
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.Top,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-
-                        Column(
-                            modifier = Modifier.fillMaxWidth(.85f)
-                        ) {
-
-                           /* Text(
-                                text = char.name,
-                                style = MaterialTheme.typography.titleMedium
-                            )*/
-                            Text(
-                                text = char.uuid.uppercase(),
-                                style = MaterialTheme.typography.bodySmall
-                            )
-                        }
-
-                    }
-
                     if (state == 0) {
                         ReadCharacteristic(char, onRead)
                     }
-
-
-
                 }
             }
             if (service.characteristics.indexOf(char) < service.characteristics.count() - 1) {

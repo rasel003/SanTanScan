@@ -35,11 +35,9 @@ fun ReadCharacteristic(
     ) {
         SelectionContainer {
             Column {
-                Timber.d(char.uuid)
-                Timber.d(Appearance.uuid)
                 onRead(char.getReadInfo())
                 Text(
-                    text = char.getReadInfo(),
+                    text = "Sensor Value : "+char.getReadInfo(),
                     style = codeFont
                 )
             }

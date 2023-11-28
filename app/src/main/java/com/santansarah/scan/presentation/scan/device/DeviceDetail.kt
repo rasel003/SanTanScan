@@ -49,7 +49,7 @@ fun ShowDeviceDetail(
     val disconnectEnabled = scanUi.bleMessage.isActive()
 
     val statusText = buildAnnotatedString {
-        append("Status: ")
+        append("Sensor : ")
         withStyle(style = SpanStyle(fontStyle = FontStyle.Italic)) {
             append(scanUi.bleMessage.toTitle())
         }

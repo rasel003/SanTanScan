@@ -130,6 +130,14 @@ fun HomeScreen(
                         setVisibleXRangeMaximum(visibleRange)
                         setVisibleXRangeMinimum(visibleRange)
 
+                        // Calculate the maximum value in the dataset
+                        val maxY = dataPoints.maxOfOrNull { it.y } ?: 0f
+                        val minY = dataPoints.minOfOrNull { it.y } ?: 0f
+
+                        // Set Y-axis range to 10 more than the maximum value
+                        axisLeft.axisMaximum = maxY + 20f
+                        axisLeft.axisMinimum = minY - 10f
+
                         invalidate()
                         moveViewToX(count.toFloat())
                     }
