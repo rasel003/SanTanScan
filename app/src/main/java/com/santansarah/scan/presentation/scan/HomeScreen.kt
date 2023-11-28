@@ -1,5 +1,6 @@
 package com.santansarah.scan.presentation.scan
 
+import android.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -102,6 +103,8 @@ fun HomeScreen(
                         }
 
                         val dataSet = LineDataSet(entries, "Data Set")
+                        dataSet.color = Color.BLUE
+                        dataSet.valueTextColor = Color.BLACK
                         val lineData = LineData(dataSet)
                         this.data = lineData
 
@@ -109,14 +112,18 @@ fun HomeScreen(
                         isDragEnabled = true
                         isScaleXEnabled = true
 
+                        axisLeft.axisMaximum = 30F
+                        axisLeft.axisMinimum = 0F
+
                         // Customize X-axis
                         // Set X-axis range
                         xAxis.axisMinimum = 1f
                         xAxis.axisMaximum = 10f
-                        xAxis.labelRotationAngle = -45f // Optional: Rotate labels for better visibility
+                        xAxis.labelRotationAngle =
+                            -45f // Optional: Rotate labels for better visibility
 
                         // Set an initial visible range on the x-axis
-                        val visibleRange = 3f
+                        val visibleRange = 10f
                         setVisibleXRangeMaximum(visibleRange)
                         setVisibleXRangeMinimum(visibleRange)
                     }
@@ -165,7 +172,7 @@ fun HomeScreen(
                 val value = Random.nextFloat() * 30
                 // Ensure the random value is within the desired range (0 to 30)
                 val point = DataPoint(count.toFloat(), value.coerceIn(0f, 30f))
-                dataPoints +=  point
+                dataPoints += point
                 count++
             },
             modifier = Modifier.fillMaxWidth()
@@ -183,6 +190,11 @@ fun HomeScreen(
         isEditing = isEditing,
         onSave = onSave
     ) {
+        it.toFloatOrNull()?.let {
+            val point = DataPoint(count.toFloat(), it)
+            dataPoints += point
+            count++
+        }
 
     }
 }
@@ -190,7 +202,7 @@ fun HomeScreen(
 data class DataPoint(val x: Float, val y: Float)
 
 
-fun generateDataPoints(count: Int = 2): List<DataPoint> {
+fun generateDataPoints(count: Int = 1): List<DataPoint> {
     return List(count) {
         DataPoint(it.toFloat(), Random.nextFloat() * 100)
     }
