@@ -173,7 +173,7 @@ fun HomeScreen(
         isEditing = isEditing,
         onSave = onSave
     ) {
-        it.toFloatOrNull()?.let { value ->
+        it.replace(Regex("[^0-9]"), "").trim().toFloatOrNull()?.let { value ->
             if(dataPoints.last().y != value) {
                 val point = DataPoint(count.toFloat(), value)
                 dataPoints += point
@@ -188,8 +188,11 @@ fun CreateFileInExternalStorage(values: List<DataPoint>) {
     val context = LocalContext.current
 
     // Display a button to create the file
-    Button(onClick = { createFileInExternalStorage(values,context) }) {
-        Text("Create File in External Storage")
+    Button(onClick = { createFileInExternalStorage(values,context) },
+        modifier = Modifier.fillMaxWidth()
+            .padding(horizontal = 50.dp)
+        ) {
+        Text("Save Data")
     }
 }
 

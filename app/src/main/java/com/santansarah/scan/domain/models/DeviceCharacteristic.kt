@@ -93,7 +93,7 @@ fun DeviceCharacteristics.getReadInfo(): String {
 
     val sb = StringBuilder()
 
-    Timber.d("readbytes from first load: $readBytes")
+    Timber.tag("rsl").d("readbytes from first load:${readBytes?.print()}-")
 
     readBytes?.let { bytes ->
         with(sb) {
