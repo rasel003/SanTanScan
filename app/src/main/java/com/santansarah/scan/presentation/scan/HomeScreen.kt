@@ -147,7 +147,7 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
+        /*Button(
             onClick = {
                 val randomValue = java.util.Random()
                     .nextInt(150) + 10.toFloat() // Example: Random data between 10 and 30
@@ -160,7 +160,7 @@ fun HomeScreen(
             Icon(imageVector = Icons.Default.Add, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
             Text("Add Random Data Point (Max 30)")
-        }
+        }*/
 
         // Call the composable function to create the file in external storage
         CreateFileInExternalStorage(dataPoints)

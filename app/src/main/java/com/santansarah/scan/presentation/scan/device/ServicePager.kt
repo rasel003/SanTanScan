@@ -40,7 +40,7 @@ fun ServicePager(
     onRead: (String) -> Unit
 ) {
 
-    val mainBodyModifier = when(appLayoutInfo.appLayoutMode) {
+    val mainBodyModifier = when (appLayoutInfo.appLayoutMode) {
         AppLayoutMode.LANDSCAPE_NORMAL -> Modifier.padding(horizontal = 20.dp)
         AppLayoutMode.LANDSCAPE_BIG -> Modifier.padding(horizontal = 40.dp)
         AppLayoutMode.PORTRAIT_NARROW -> Modifier.padding(horizontal = 16.dp)
@@ -52,7 +52,8 @@ fun ServicePager(
             modifier = mainBodyModifier
         ) {
             val services = selectedDevice.services
-            val currentServiceIdx = services.indexOfFirst { it.name.contains("Mfr", true) }.takeIf { it >= 0 } ?: 0
+            val currentServiceIdx =
+                services.indexOfFirst { it.name.contains("Mfr", true) }.takeIf { it >= 0 } ?: 0
 
 
             ServicePagerDetail(
@@ -64,15 +65,13 @@ fun ServicePager(
 }
 
 
-
-
 @Composable
 fun ServicePagerDetail(
     service: DeviceService,
     onRead: (String) -> Unit
 ) {
 
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
@@ -82,25 +81,40 @@ fun ServicePagerDetail(
         service.characteristics
             .filter { it.uuid.contains("00001002", ignoreCase = true) }
             .forEach { char ->
-            OutlinedCard(
-                modifier = Modifier
-                    .defaultMinSize(minHeight = 50.dp)
-            ) {
-                val state by rememberSaveable { mutableStateOf(0) }
-
-                Column(
-                    modifier = Modifier.padding(6.dp)
+                OutlinedCard(
+                    modifier = Modifier
+                        .defaultMinSize(minHeight = 50.dp)
                 ) {
+                    val state by rememberSaveable { mutableStateOf(0) }
 
-                    if (state == 0) {
-                        ReadCharacteristic(char, onRead)
+                    Column(
+                        modifier = Modifier.padding(6.dp)
+                    ) {
+
+                        if (state == 0) {
+                            ReadCharacteristic(char, onRead)
+                        }
                     }
                 }
+                OutlinedCard(
+                    modifier = Modifier
+                        .defaultMinSize(minHeight = 50.dp)
+                ) {
+                    val state by rememberSaveable { mutableStateOf(0) }
+
+                    Column(
+                        modifier = Modifier.padding(6.dp)
+                    ) {
+
+                        if (state == 0) {
+                            ReadCharacteristic2(char)
+                        }
+                    }
+                }
+                if (service.characteristics.indexOf(char) < service.characteristics.count() - 1) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
-            if (service.characteristics.indexOf(char) < service.characteristics.count() - 1) {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        }
 
 
     }

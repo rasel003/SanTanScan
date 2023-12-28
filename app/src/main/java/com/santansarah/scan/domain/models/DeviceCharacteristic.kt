@@ -67,14 +67,18 @@ data class DeviceCharacteristics(
 }
 
 fun DeviceCharacteristics.hasNotify(): Boolean = properties.contains(BleProperties.PROPERTY_NOTIFY)
-fun DeviceCharacteristics.hasIndicate(): Boolean = properties.contains(BleProperties.PROPERTY_INDICATE)
+fun DeviceCharacteristics.hasIndicate(): Boolean =
+    properties.contains(BleProperties.PROPERTY_INDICATE)
 
 fun DeviceCharacteristics.updateBytes(fromDevice: ByteArray): DeviceCharacteristics {
     Timber.d("fromDevice: $fromDevice")
     return copy(readBytes = fromDevice)
 }
 
-fun DeviceCharacteristics.updateDescriptors(uuidFromDevice: String, fromDevice: ByteArray): List<DeviceDescriptor> {
+fun DeviceCharacteristics.updateDescriptors(
+    uuidFromDevice: String,
+    fromDevice: ByteArray
+): List<DeviceDescriptor> {
     return descriptors.map {
         if (it.uuid == uuidFromDevice)
             it.copy(readBytes = fromDevice)
@@ -109,7 +113,7 @@ fun DeviceCharacteristics.getReadInfo(): String {
 //                    appendLine("String, Hex, Bytes, Binary:")
                     appendLine(bytes.decodeSkipUnreadable())
 //                    appendLine(bytes.toHex())
-                    appendLine( bytes.print())
+                    appendLine(bytes.print())
                     //appendLine(bytes.toBinaryString())
                 }
             }
@@ -117,6 +121,13 @@ fun DeviceCharacteristics.getReadInfo(): String {
     } ?: sb.appendLine("No data.")
 
     return sb.toString()
+}
+
+fun String.getPHValue(): String {
+    this.toFloatOrNull()?.let {
+        val result = 601.minus(it).div(84.5)
+        return String.format("%.2f", result)
+    } ?: run { return "Error $this" }
 }
 
 fun DeviceCharacteristics.getWriteCommands(): Array<String> {
