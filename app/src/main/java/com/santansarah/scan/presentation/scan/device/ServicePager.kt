@@ -71,7 +71,7 @@ fun ServicePagerDetail(
     onRead: (String) -> Unit
 ) {
 
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
@@ -83,7 +83,7 @@ fun ServicePagerDetail(
             .forEach { char ->
                 OutlinedCard(
                     modifier = Modifier
-                        .defaultMinSize(minHeight = 50.dp)
+                        .defaultMinSize(minHeight = 20.dp)
                 ) {
                     val state by rememberSaveable { mutableStateOf(0) }
 
@@ -98,7 +98,7 @@ fun ServicePagerDetail(
                 }
                 OutlinedCard(
                     modifier = Modifier
-                        .defaultMinSize(minHeight = 50.dp)
+                        .defaultMinSize(minHeight = 30.dp)
                 ) {
                     val state by rememberSaveable { mutableStateOf(0) }
 
@@ -110,9 +110,6 @@ fun ServicePagerDetail(
                             ReadCharacteristic2(char)
                         }
                     }
-                }
-                if (service.characteristics.indexOf(char) < service.characteristics.count() - 1) {
-                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
 

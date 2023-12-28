@@ -95,11 +95,15 @@ fun DeviceCharacteristics.updateNotification(fromDevice: ByteArray): DeviceChara
 
 fun DeviceCharacteristics.getReadInfo(): String {
 
-    val sb = StringBuilder()
+//    val sb = StringBuilder()
 
     Timber.tag("rsl").d("readbytes from first load:${readBytes?.print()}-")
+    Timber.tag("rsl").d("readbytes from first load hex:${readBytes?.toHex()}-")
+    Timber.tag("rsl").d("readbytes from first load hex 2:${readBytes?.toHex()?.rearrangeString()}-")
+    Timber.tag("rsl").d("readbytes from first load hex 2:${readBytes?.toHex()?.rearrangeString()?.toInt(16)}-")
+    return readBytes?.toHex()?.rearrangeString()?.toInt(16).toString()
 
-    readBytes?.let { bytes ->
+   /* readBytes?.let { bytes ->
         with(sb) {
             when (uuid) {
                 Appearance.uuid -> {
@@ -113,14 +117,14 @@ fun DeviceCharacteristics.getReadInfo(): String {
 //                    appendLine("String, Hex, Bytes, Binary:")
                     appendLine(bytes.decodeSkipUnreadable())
 //                    appendLine(bytes.toHex())
-                    appendLine(bytes.print())
+                    appendLine(bytes.toHex()?.rearrangeString()?.toInt(16))
                     //appendLine(bytes.toBinaryString())
                 }
             }
         }
-    } ?: sb.appendLine("No data.")
+    } ?: sb.appendLine("No data.")*/
 
-    return sb.toString()
+//    return sb.toString()
 }
 
 fun String.getPHValue(): String {
@@ -129,7 +133,16 @@ fun String.getPHValue(): String {
         return String.format("%.2f", result)
     } ?: run { return "Error $this" }
 }
+fun String.rearrangeString(): String? {
+    if (this.length != 6) {
+        return null
+    }
 
+    val firstTwoDigits = this.substring(2, 4)
+    val lastTwoDigits = this.substring(4, 6)
+
+    return lastTwoDigits + firstTwoDigits
+}
 fun DeviceCharacteristics.getWriteCommands(): Array<String> {
     return when (uuid) {
         ELKBLEDOM.uuid -> {
